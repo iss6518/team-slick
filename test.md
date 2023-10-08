@@ -1,0 +1,2 @@
+What’s In My Fridge- 
+A common problem young adults & really anyone has is food going bad at home because people either forget about it or buy too much at the store. This platform will help users keep track of food in your fridge and auto-generates grocery lists based on how much food you have in your fridge already and what you normally buy. It will have a reminder functionality to let you know about expiration dates and what you should eat/use soon before it goes bad. It can also recommend recipes based on food you have! 
