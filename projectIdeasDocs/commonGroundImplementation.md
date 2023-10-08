@@ -1,0 +1,1 @@
+CommonGround is a platform that connects people with shared interests and goals. It is a versatile application that acts as a mentorship, hobby sharing, or partner matching tool. Backend Implementation: UI, API, Database, Data protection, Outreach mechanisms (marketing), financial outtake
