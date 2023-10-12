@@ -64,7 +64,7 @@ class MainMenu(Resource):
                           'text': 'List Available Characters'},
                     '2': {'url': '/',
                           'method': 'get', 'text': 'List Active Games'},
-                    '3': {'url': f'/{USERS}',
+                    '3': {'url': f'/{USERS_EP}',
                           'method': 'get', 'text': 'List Users'},
                     'X': {'text': 'Exit'},
                 }}
