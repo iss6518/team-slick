@@ -70,7 +70,7 @@ class MainMenu(Resource):
                 }}
 
 
-@api.route(f'/{USERS}')
+@api.route(f'/{USERS_EP}')
 class Users(Resource):
     """
     This class supports fetching a list of all pets.
@@ -79,4 +79,4 @@ class Users(Resource):
         """
         This method returns all users.
         """
-        return 'Current Users:\nSai\nAbhishek\nKristian\n'
+        return users.fetch_pets()
