@@ -19,7 +19,7 @@ HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 
 
-@api.route('HELLO_EP')
+@api.route(HELLO_EP)
 class HelloWorld(Resource):
     """
     The purpose of the HelloWorld class is to have a simple test to see if the
@@ -64,13 +64,13 @@ class MainMenu(Resource):
                           'text': 'List Available Characters'},
                     '2': {'url': '/',
                           'method': 'get', 'text': 'List Active Games'},
-                    '3': {'url': f'/{USERS_EP}',
+                    '3': {'url': f'{USERS_EP}',
                           'method': 'get', 'text': 'List Users'},
                     'X': {'text': 'Exit'},
                 }}
 
 
-@api.route(f'/{USERS_EP}')
+@api.route(f'{USERS_EP}')
 class Users(Resource):
     """
     This class supports fetching a list of all pets.
