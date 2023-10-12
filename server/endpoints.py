@@ -79,4 +79,4 @@ class Users(Resource):
         """
         This method returns all users.
         """
-        return users.fetch_pets()
+        return {DATA: users.fetch_pets()}
