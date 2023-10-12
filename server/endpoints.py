@@ -17,6 +17,7 @@ MAIN_MENU_NM = "Welcome to Text Game!"
 USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
+DATA = 'Data'
 
 
 @api.route(HELLO_EP)
