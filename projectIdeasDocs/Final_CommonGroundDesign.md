@@ -1,5 +1,6 @@
 Team Slick has decided to create CommonGround, a platform that connects people with shared interests and goals,
 and acts as a mentorship, hobby-sharing, or partner-matching tool. 
+--
 This application allows individuals to match to another like-minded artist, engineer, foodie, or fanatic of any kind. 
 Users can decide to sign up for mutual mentorship, collaboration, or a simple hang-out session based on a few of their top interests. 
 For example, if a guitarist was looking to perform at a coffee shop and wanted a singer, they’d be matched with just that on CommonGround. 
@@ -8,7 +9,6 @@ Finally, if someone knew Web Development very well, and was looking to learn Mob
 they’d find a mentee and mentor on CommonGround! 
 Our application is versatile and aims to be the best platform to match like-minded individuals in this deeply disconnected world. 
 Come join us in building community at CommonGroud!
---
 
 
 Documentation:
