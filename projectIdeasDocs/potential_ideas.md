@@ -1,0 +1,6 @@
+Team slick potential ideas 
+
+Private sidewalk parking - Driving through the city can be a hassle with parking. I’ve noticed a lot of homes have private parking, whether it’s an unused parking garage or the sidewalk in front of the parking spot that can’t be blocked. It would be cool to offer these spots up for rent short term, perhaps by the hour. There isn’t much risk since a homeowner could request the car to be towed if someone disobeys the terms of agreement. 
+
+
+Rideshare - I was speaking to a student from the NYU AD campus and they mentioned they planned on traveling to Dubai using a rideshare app. At first I thought it was Uber pool, but it's a different app people can use to get to distant locations at a much cheaper rate. This poses a few risks (being with strangers, spacing, etc) but it would be cool to have an app where you can choose a distant city and see a bunch of people willing rideshare to that city on different days of the week. This can also be an opportunity to make money/friends for people who are going to drive to those cities in their own cars and have extra space. 

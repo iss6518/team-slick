@@ -5,17 +5,23 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
-# import db.db as db
+import db.db as users
 
+# creating flash application 
 app = Flask(__name__)
 api = Api(app)
 
 MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
-USERS = 'users'
 
+# forming some endpoint URLs
+USERS_EP = '/users'
+HELLO_EP = '/hello'
+HELLO_RESP = 'hello'
+DATA = 'Data'
 
-@api.route('/hello')
+# creating an endpoint for /hello URL
+@api.route(HELLO_EP)
 class HelloWorld(Resource):
     """
     The purpose of the HelloWorld class is to have a simple test to see if the
@@ -26,9 +32,9 @@ class HelloWorld(Resource):
         A trivial endpoint to see if the server is running.
         It just answers with "hello world."
         """
-        return {'hello': 'world'}
+        return {HELLO_RESP: 'world'}
 
-
+# creating an endpoint for /endpoint URL
 @api.route('/endpoints')
 class Endpoints(Resource):
     """
@@ -42,7 +48,7 @@ class Endpoints(Resource):
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {"Available endpoints": endpoints}
 
-
+# creating an endpoint for /MainMenu
 @api.route(f'/{MAIN_MENU}')
 @api.route('/')
 class MainMenu(Resource):
@@ -60,13 +66,13 @@ class MainMenu(Resource):
                           'text': 'List Available Characters'},
                     '2': {'url': '/',
                           'method': 'get', 'text': 'List Active Games'},
-                    '3': {'url': f'/{USERS}',
+                    '3': {'url': f'{USERS_EP}',
                           'method': 'get', 'text': 'List Users'},
                     'X': {'text': 'Exit'},
                 }}
 
-
-@api.route(f'/{USERS}')
+# creating an endpoint for /users
+@api.route(f'{USERS_EP}')
 class Users(Resource):
     """
     This class supports fetching a list of all pets.
@@ -75,4 +81,4 @@ class Users(Resource):
         """
         This method returns all users.
         """
-        return 'Current Users:\nSai\nAbhishek\nKristian\n'
+        return {DATA: users.fetch_pets()}
