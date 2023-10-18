@@ -7,10 +7,9 @@ from flask import Flask
 from flask_restx import Resource, Api
 import db.db as users
 
-# creating flash application 
+# creating flash application
 app = Flask(__name__)
 api = Api(app)
-
 MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
 
@@ -19,6 +18,7 @@ USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 DATA = 'Data'
+
 
 # creating an endpoint for /hello URL
 @api.route(HELLO_EP)
@@ -34,6 +34,7 @@ class HelloWorld(Resource):
         """
         return {HELLO_RESP: 'world'}
 
+
 # creating an endpoint for /endpoint URL
 @api.route('/endpoints')
 class Endpoints(Resource):
@@ -47,6 +48,7 @@ class Endpoints(Resource):
         """
         endpoints = sorted(rule.rule for rule in api.app.url_map.iter_rules())
         return {"Available endpoints": endpoints}
+
 
 # creating an endpoint for /MainMenu
 @api.route(f'/{MAIN_MENU}')
@@ -70,6 +72,7 @@ class MainMenu(Resource):
                           'method': 'get', 'text': 'List Users'},
                     'X': {'text': 'Exit'},
                 }}
+
 
 # creating an endpoint for /users
 @api.route(f'{USERS_EP}')
