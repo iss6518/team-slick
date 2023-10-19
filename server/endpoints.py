@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
-import db.db as users
+import db.users as users
 
 # creating flash application
 app = Flask(__name__)
@@ -84,4 +84,4 @@ class Users(Resource):
         """
         This method returns all users.
         """
-        return {DATA: users.fetch_pets()}
+        return {DATA: users.fetch_users()}

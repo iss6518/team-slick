@@ -5,8 +5,8 @@ Gradually, we will fill in actual calls to our datastore.
 """
 
 
-def fetch_pets():
+def fetch_users():
     """
-    A function to return all pets in the data store.
+    A function to return all users in the data store.
     """
-    return {"tigers": 2, "lions": 3, "zebras": 1}
+    return {"John": 2, "Will": 3, "James": 1}
