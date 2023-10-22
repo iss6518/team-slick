@@ -1,8 +1,13 @@
-DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
+include common.mk
 
-docs: $(DOCFILES)
+API_DIR = server
 
-%.html: %.py
-	pydoc3 -w ./$<
-	git add $@
+all_tests: tests
 
+tests: lint pytests
+
+lint: FORCE
+	$(LINTER) $(API_DIR)/*.py
+
+pytests: FORCE
+	cd $(API_DIR); make tests
