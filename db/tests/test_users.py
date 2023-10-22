@@ -10,5 +10,5 @@ def test_get_users():
         assert len(key) >= usrs.MIN_USER_NAME_LEN
         user = users[key]
         assert isinstance(user, dict)
-        assert usrs.LEVEL in user
-        assert isinstance(user[usrs.LEVEL], int)
+        assert testUsers.INTERESTS in user
+        assert isinstance(user[testUsers.INTERESTS], list)
