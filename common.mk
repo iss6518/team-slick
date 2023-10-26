@@ -1,6 +1,6 @@
 #common makefile will be used as common template for our top level makefile. We'll import this file into our main makefile 
 export LINTER = flake8
-export PYLINFLAGS = --exclude=__main__.py
+export PYLINTFLAGS = --exclude=__main__.py
 
 PYTHONFILES = $(shell ls *.py)
 PYTESTFLAGS = -vv --verbose --cov-branch --cov-report term-missing --tb=short -W ignore::FutureWarning
@@ -17,7 +17,7 @@ lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 	$(LINTER) $(PYLINTFLAGS) $*.py
 
 pytests: FORCE
-	export TEST_DB = 1; pytest $(PYTESTFLAGS) --cov=$(PKG)
+	export TEST_DB=1; pytest $(PYTESTFLAGS) --cov=$(PKG)
 
 
 # testing a python file: 
