@@ -9,10 +9,12 @@ MAIL_METHOD = api
 
 FORCE:
 
-tests : lint pytests
+tests: lint pytests
+
+lint: $(patsubst %.py,%.pylint,$(PYTHONFILES))
 
 %.pylint:
-	$(PYLINT) $(PYLINFLAGS) $*.py
+	$(LINTER) $(PYLINTFLAGS) $*.py
 
 pytests: FORCE
 	export TEST_DB = 1; pytest $(PYTESTFLAGS) --cov=$(PKG)
@@ -20,7 +22,7 @@ pytests: FORCE
 
 # testing a python file: 
 %.py: FORCE	
-	$(PYLINT) $(PYLINFLAGS) $@
+	$(LINTER) $(PYLINTFLAGS) $@
 	export TEST_DB=1; pytest $(PYTESTFLAGS) tests/test_$*.py
 
 nocrud: 
