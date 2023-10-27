@@ -5,6 +5,7 @@ Gradually, we will fill in actual calls to our datastore.
 """
 
 INTERESTS = 'interests'
+MIN_USER_NAME_LEN = 2
 
 
 def fetch_users():
