@@ -18,7 +18,6 @@ USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 DATA = 'Data'
-NAME = 'John'
 
 
 # creating an endpoint for /hello URL
@@ -88,7 +87,7 @@ class friendRequests(Resource):
         """
         This method returns all friend requests
         """
-        return {DATA: users.get_friend_requests(NAME)}
+        return {DATA: users.get_friend_requests(users.NAME)}
 
 
 # creating an endpoint for /users
