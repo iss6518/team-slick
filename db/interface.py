@@ -2,4 +2,3 @@
 
 INTERESTS = 'interests'
 NAME = 'John'
-
