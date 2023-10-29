@@ -74,6 +74,22 @@ class MainMenu(Resource):
                 }}
 
 
+# need to add an endpoint (maybe external) for login (ex: signin with email or google)
+
+
+# endpoint for getting list of friend requests
+@api.route(f'{USERS_EP}')
+class friendRequests(Resource):
+    """
+    This class supports fetching a list of friend requests
+    """
+    def get(self):
+        """
+        This method returns all friend requests
+        """
+        return {DATA: users.get_friend_requests()}
+
+
 # creating an endpoint for /users
 @api.route(f'{USERS_EP}')
 class Users(Resource):
