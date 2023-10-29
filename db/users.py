@@ -17,3 +17,13 @@ def fetch_users():
         "Will": {INTERESTS: ["music", "dance"]},
         "James": {INTERESTS: ["coffee", "cooking"]}
     }
+
+
+def get_friend_requests(name):
+    """
+    A function to return all friend requests for user w/ provided name
+    """
+    return {
+        "John": {INTERESTS: ["cars", "sports"]},
+        "Mike": {INTERESTS: ["sports", "swe"]}
+    }

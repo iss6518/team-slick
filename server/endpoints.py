@@ -18,6 +18,7 @@ USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
 DATA = 'Data'
+NAME = 'John'
 
 
 # creating an endpoint for /hello URL
@@ -74,7 +75,7 @@ class MainMenu(Resource):
                 }}
 
 
-# need to add an endpoint (maybe external) for login (ex: signin with email or google)
+# need to add an (maybe external) endpoint for login (ex: signin with google)
 
 
 # endpoint for getting list of friend requests
@@ -87,7 +88,7 @@ class friendRequests(Resource):
         """
         This method returns all friend requests
         """
-        return {DATA: users.get_friend_requests()}
+        return {DATA: users.get_friend_requests(NAME)}
 
 
 # creating an endpoint for /users
