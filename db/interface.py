@@ -5,3 +5,4 @@ NAME = 'John'
 
 def get_name(): 
     return NAME
+
