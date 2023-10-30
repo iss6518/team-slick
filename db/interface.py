@@ -2,3 +2,5 @@
 
 INTERESTS = 'interests'
 NAME = 'John'
+GENDER = 'Male'
+AGE = 22
