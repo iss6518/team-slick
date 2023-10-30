@@ -1,0 +1,1 @@
+The purpose of our interface.py file is to provide clear guidelines on constant functions or data to be used. The data we are working with now includes the user name and user interests.
