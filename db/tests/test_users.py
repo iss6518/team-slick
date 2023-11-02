@@ -21,3 +21,10 @@ def test_get_friend_requests():
         assert isinstance(key, str)
         friendRequest = friendRequests[key]
         assert isinstance(friendRequest, dict)
+
+
+def test_add_friend():
+    adding_friend = testUsers.add_friend(testUsers.USER_NAME)
+    assert isinstance(adding_friend, dict)
+    added_friend = adding_friend[testUsers.USER_NAME]
+    assert testUsers.USER_NAME in testUsers.my_friends.keys()
