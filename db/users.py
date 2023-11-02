@@ -8,16 +8,22 @@ INTERESTS = 'interests'
 MIN_USER_NAME_LEN = 2
 NAME = 'John'
 
+users = {
+        "John": {INTERESTS: ["sports", "studying"]},
+        "Will": {INTERESTS: ["music", "dance"]},
+        "James": {INTERESTS: ["coffee", "cooking"]}
+}
+
+friends = {
+        "John": {INTERESTS: ["sports", "studying"]},
+}
+
 
 def fetch_users():
     """
     A function to return all users in the data store.
     """
-    return {
-        "John": {INTERESTS: ["sports", "studying"]},
-        "Will": {INTERESTS: ["music", "dance"]},
-        "James": {INTERESTS: ["coffee", "cooking"]}
-    }
+    return users
 
 
 def get_friend_requests(name):
@@ -28,3 +34,10 @@ def get_friend_requests(name):
         "John": {INTERESTS: ["cars", "sports"]},
         "Mike": {INTERESTS: ["sports", "swe"]}
     }
+
+
+def add_friend(userName: str) -> dict:
+    if userName in friends:
+        raise ValueError(f'Duplicate friend: {userName=}')
+    friends[userName] = users[userName]
+    return friends
