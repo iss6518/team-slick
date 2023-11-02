@@ -87,7 +87,7 @@ class friendRequests(Resource):
         """
         This method returns all friend requests
         """
-        return {DATA: users.get_friend_requests(users.NAME)}
+        return {DATA: users.get_friend_requests()}
 
 
 # creating an endpoint for /users

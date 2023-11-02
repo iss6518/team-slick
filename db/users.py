@@ -6,38 +6,41 @@ Gradually, we will fill in actual calls to our datastore.
 
 INTERESTS = 'interests'
 MIN_USER_NAME_LEN = 2
-NAME = 'John'
+USER_NAME = "Will"
 
-users = {
-        "John": {INTERESTS: ["sports", "studying"]},
-        "Will": {INTERESTS: ["music", "dance"]},
-        "James": {INTERESTS: ["coffee", "cooking"]}
+all_users = {
+    "John": {INTERESTS: ["sports", "studying"]},
+    "Will": {INTERESTS: ["music", "dance"]},
+    "James": {INTERESTS: ["coffee", "cooking"]},
+    "Mike": {INTERESTS: ["sports", "swe"]}
 }
 
-friends = {
-        "John": {INTERESTS: ["sports", "studying"]},
+my_friends = {
+    "John": {INTERESTS: ["sports", "studying"]},
+}
+
+my_friend_requests = {
+    "James": {INTERESTS: ["coffee", "cooking"]},
+    "Mike": {INTERESTS: ["sports", "swe"]}
 }
 
 
-def fetch_users():
+def fetch_users() -> dict:
     """
     A function to return all users in the data store.
     """
-    return users
+    return all_users
 
 
-def get_friend_requests(name):
+def get_friend_requests() -> dict:
     """
-    A function to return all friend requests for user w/ provided name
+    A function to return all of a user's friend requests
     """
-    return {
-        "John": {INTERESTS: ["cars", "sports"]},
-        "Mike": {INTERESTS: ["sports", "swe"]}
-    }
+    return my_friend_requests
 
 
-def add_friend(userName: str) -> dict:
-    if userName in friends:
-        raise ValueError(f'Duplicate friend: {userName=}')
-    friends[userName] = users[userName]
-    return friends
+def add_friend(user_name: str) -> dict:
+    if user_name in my_friends:
+        raise ValueError(f'Duplicate friend add: {user_name=}')
+    my_friends[user_name] = all_users[user_name]
+    return my_friends

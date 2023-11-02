@@ -15,7 +15,7 @@ def test_get_users():
 
 
 def test_get_friend_requests():
-    friendRequests = testUsers.get_friend_requests(testUsers.NAME)
+    friendRequests = testUsers.get_friend_requests()
     assert isinstance(friendRequests, dict)
     for key in friendRequests:
         assert isinstance(key, str)
