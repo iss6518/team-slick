@@ -44,3 +44,10 @@ def add_friend(user_name: str) -> dict:
         raise ValueError(f'Duplicate friend add: {user_name=}')
     my_friends[user_name] = all_users[user_name]
     return my_friends
+
+
+def get_friends() -> dict:
+    """ 
+    A function to return all of a users friends
+    """
+    return my_friends
