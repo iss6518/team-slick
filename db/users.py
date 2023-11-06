@@ -47,7 +47,7 @@ def add_friend(user_name: str) -> dict:
 
 
 def get_friends() -> dict:
-    """ 
+    """
     A function to return all of a users friends
     """
     return my_friends
