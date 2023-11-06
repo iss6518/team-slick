@@ -1,6 +1,8 @@
 # interface for our user data
+import random
 
-MIN_USER_NAME_LEN = 2
+BIG_NUM = 100000000
+
 INTERESTS = 'interests'
 NAME = 'user_name'
 GENDER = ''
@@ -18,3 +20,22 @@ users = {
     },
 
 }
+
+
+def _get_test_name():
+    """
+    Function to get the random test user name
+    """
+    name = 'test'
+    rand_part = random.randint(0, BIG_NUM)
+    return name + str(rand_part)
+
+
+def get_test_user():
+    """
+    Function to return us a sample test user
+    """
+    test_user = {}
+    test_user[NAME] = _get_test_name()
+    test_user[AGE] = 18
+    return test_user
