@@ -29,3 +29,9 @@ def test_list_users():
     def test_for_users_bad_add(mock_add):
         resp = TEST_CLIENT.post(ep.USERS_EP, json=users.fetch_users())
         assert resp.status_code == NOT_ACCEPTABLE
+
+
+    @pytest.mark.skip('An example of using skip for a failing test' 
+                + ' until it is dealt with at a later time' )
+    def test_that_doesnt_work():
+        assert False
