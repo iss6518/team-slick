@@ -1,5 +1,7 @@
 from http.client import OK, NOT_FOUND, FORBIDDEN, NOT_ACCEPTABLE, BAD_REQUEST
 
+from unittest.mock import patch
+
 import pytest
 
 import db.users as users
@@ -23,9 +25,7 @@ def test_list_users():
     assert ep.DATA in resp_json
 
 
-    """
-    @patch('db.users.add_users', side_effect=ValueError(), autospec=True)
+    @patch('db.users.add_friend', side_effect=ValueError(), autospec=True)
     def test_for_users_bad_add(mock_add):
-        resp = TEST_CLIENT.post(ep.USERS_EP, json=users.get_users())
+        resp = TEST_CLIENT.post(ep.USERS_EP, json=users.fetch_users())
         assert resp.status_code == NOT_ACCEPTABLE
-    """
