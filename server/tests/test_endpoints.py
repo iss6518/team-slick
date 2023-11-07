@@ -29,7 +29,15 @@ def test_list_users():
     def test_for_users_bad_add(mock_add):
         resp = TEST_CLIENT.post(ep.USERS_EP, json=users.fetch_users())
         assert resp.status_code == NOT_ACCEPTABLE
+        
 
+    @patch('data.users.add_friend', return_value=users.MOCK_ID, autospec=True)
+    def test_games_add(mock_add):
+        """
+        Testing we do the right thing with a good return from add_game.
+        """
+        resp = TEST_CLIENT.post(ep.USERS_EP, json=users.fetch_users())
+        assert resp.status_code == OK
 
     @pytest.mark.skip('An example of using skip for a failing test' 
                 + ' until it is dealt with at a later time' )

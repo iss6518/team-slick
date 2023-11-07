@@ -7,6 +7,9 @@ Gradually, we will fill in actual calls to our datastore.
 INTERESTS = 'interests'
 MIN_USER_NAME_LEN = 2
 USER_NAME = "Will"
+ID_LEN = 24
+BIG_NUM = 100_000_000_000_000_000_000
+MOCK_ID = '0' * ID_LEN
 
 all_users = {
     "John": {INTERESTS: ["sports", "studying"]},
