@@ -10,6 +10,7 @@ USER_NAME = "Will"
 ID_LEN = 24
 BIG_NUM = 100_000_000_000_000_000_000
 MOCK_ID = '0' * ID_LEN
+TESTNAME = "John"
 
 all_users = {
     "John": {INTERESTS: ["sports", "studying"]},
@@ -54,3 +55,9 @@ def get_friends() -> dict:
     A function to return all of a users friends
     """
     return my_friends
+
+
+# def _get_test_name():
+#     name = 'test'
+#     rand_part = random.randint(0, BIG_NUM)
+#     return name + str(rand_part)

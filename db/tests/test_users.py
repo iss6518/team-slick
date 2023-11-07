@@ -1,4 +1,5 @@
 import db.users as testUsers
+import pytest
 
 
 def test_get_users():
@@ -28,3 +29,9 @@ def test_add_friend():
     assert isinstance(adding_friend, dict)
     added_friend = adding_friend[testUsers.USER_NAME]
     assert testUsers.USER_NAME in testUsers.my_friends.keys()
+
+
+def test_duplicate_friend():
+    name = testUsers.TESTNAME
+    with pytest.raises(ValueError):
+        testUsers.add_friend(name)
