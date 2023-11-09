@@ -57,6 +57,15 @@ def get_friends() -> dict:
     return my_friends
 
 
+def del_user(name: str):
+    """
+    A function to remove a user from list of users
+    """
+    if name in all_users:
+        del all_users[name]
+    else:
+        raise ValueError(f'Delete failure: {name} not in database.')
+
 # def _get_test_name():
 #     name = 'test'
 #     rand_part = random.randint(0, BIG_NUM)
