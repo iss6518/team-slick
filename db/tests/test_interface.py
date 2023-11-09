@@ -2,16 +2,15 @@
 import pytest
 import db.interface as wrld
 
-"""
+
 @pytest.fixture(scope='function')
 def temp_user():
     name = wrld._get_test_name()
-    ret = wrld.add(name)
+    ret = wrld.add_user(name, 1, "gender", "interest")
     yield name
     if wrld.exists(name):
         wrld.del_user(name)
-        
-"""
+
 
 
 def test_get_test_name():
@@ -29,6 +28,16 @@ def test_gen_id():
 def test_get_test_user():
     assert isinstance(wrld.get_test_user(), dict)
 
+
+def test_get_users(temp_user):
+    users = wrld.fetch_users()
+    assert isinstance(users, dict)
+    assert len(users) > 0
+    for user in users:
+        assert isinstance(user, str)
+        assert isinstance(users[user], dict)
+    assert wrld.exists(temp_user)
+    
 
 ADD_USER = "New User"
 
