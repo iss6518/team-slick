@@ -2,13 +2,16 @@
 import random
 
 BIG_NUM = 100000000
-
+ID_LEN = 24
+MOCK_ID = '0' * ID_LEN
 INTERESTS = 'interests'
 NAME = 'user_name'
 GENDER = ''
 AGE = 22
 TEST_USER_NAME = 'WILL'
 
+users = {}
+"""
 users = {
     'John': {
         AGE: 22,
@@ -20,6 +23,7 @@ users = {
     },
 
 }
+"""
 
 
 def _get_test_name():
@@ -49,3 +53,39 @@ def del_user(name: str):
         del users[name]
     else:
         raise ValueError(f'Delete failure: {name} not in database.')
+
+
+def fetch_users() -> dict:
+    """
+    A function to return all users in the data store.
+    """
+    return users
+
+
+def exists(name: str) -> bool:
+    """
+    Function to check if user exists, returns bool
+    """
+    return name in fetch_users()
+
+
+def _gen_id() -> str:
+    """
+    Function to produce ID for users
+    """
+    _id = random.randint(0, BIG_NUM)
+    _id = str(_id)
+    _id = _id.rjust(ID_LEN, '0')
+    return _id
+
+
+def add_user(name: str, age: int, gender: str, interest: str) -> str:
+    """
+    Function to add users. For interests, users only enter 1 interest
+    """
+    if name in users:
+        raise ValueError(f'Duplicate user name: {name= }')
+    if not name:
+        raise ValueError("User can't be blank")
+    users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
+    return _gen_id()
