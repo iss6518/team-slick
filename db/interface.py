@@ -39,3 +39,13 @@ def get_test_user():
     test_user[NAME] = _get_test_name()
     test_user[AGE] = 18
     return test_user
+
+
+def del_user(name: str):
+    """
+    A function to remove a user from list of users
+    """
+    if name in users:
+        del users[name]
+    else:
+        raise ValueError(f'Delete failure: {name} not in database.')

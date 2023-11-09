@@ -66,6 +66,13 @@ def del_user(name: str):
     else:
         raise ValueError(f'Delete failure: {name} not in database.')
 
+
+def exists(name: str) -> bool:
+    """
+    Function to check if user exists, returns bool
+    """
+    return name in fetch_users()
+
 # def _get_test_name():
 #     name = 'test'
 #     rand_part = random.randint(0, BIG_NUM)

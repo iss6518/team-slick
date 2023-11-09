@@ -8,6 +8,7 @@ def temp_user():
     name = wrld._get_test_name()
     ret = wrld.add_friend(name)
     yield name
-    if wrld.exists(name)
-        wrld.del
+    if wrld.exists(name):
+        wrld.del_user(name)
+        
         """
