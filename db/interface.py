@@ -89,3 +89,14 @@ def add_user(name: str, age: int, gender: str, interest: str) -> str:
         raise ValueError("User can't be blank")
     users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
     return _gen_id()
+
+
+def del_user(name: str):
+    """
+    A function to remove a user from list of users
+    """
+    if name in users:
+        del users[name]
+    else:
+        raise ValueError(f'Delete failure: {name} not in database.')
+    

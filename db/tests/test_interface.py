@@ -37,7 +37,17 @@ def test_get_users(temp_user):
         assert isinstance(user, str)
         assert isinstance(users[user], dict)
     assert wrld.exists(temp_user)
-    
+
+
+def test_add_user_dup_name(temp_user):
+    """
+    Making sure a duplicate user name raises a value error
+    """
+    dup_name = temp_user
+    with pytest.raises(ValueError):
+        wrld.add_user(dup_name, 1, "gender", "interest")
+
+
 
 ADD_USER = "New User"
 
@@ -46,5 +56,18 @@ def test_add_user():
     ret = wrld.add_user(ADD_USER, 30, "Female", "hiking")
     assert wrld.exists(ADD_USER)
     assert isinstance(ret, str)
+
+
+def test_del_user(temp_user):
+    name = temp_user
+    wrld.del_user(name)
+    assert not wrld.exists(name)
+
+
+def test_del_user_not_there():
+    name = wrld._get_test_name()
+    with pytest.raises(ValueError):
+        wrld.del_user(name)
+
 
 
