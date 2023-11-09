@@ -13,10 +13,21 @@ def temp_user():
         
 """
 
+
+def test_get_test_name():
+    name = wrld._get_test_name()
+    assert isinstance(name, str)
+    assert len(name) > 0
+
+
 def test_gen_id():
     _id = wrld._gen_id()
     assert isinstance(_id, str)
     assert len(_id) == wrld.ID_LEN
+
+
+def test_get_test_user():
+    assert isinstance(wrld.get_test_user(), dict)
 
 
 ADD_USER = "New User"
