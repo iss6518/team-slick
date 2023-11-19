@@ -16,7 +16,7 @@ def connect_db():
     """
     This provides a uniform way to connect to the DB across all uses.
     Returns a mongo client object... (might have to rethink this)
-    Also set global client variable. 
+    Also set global client variable.
     We should either return a client OR set a client global.
     """
     global client
