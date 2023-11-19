@@ -50,8 +50,7 @@ def insert_one(collection, doc, db=COMMONGROUND_DB):
     return client[db][collection].insert_one(doc)
 
 
-"""
-def fetch_one(collection, filt, db=GAME_DB):
+def fetch_one(collection, filt, db=COMMONGROUND_DB):
     # Find with a filter and return on the first doc found.
 
     for doc in client[db][collection].find(filt):
@@ -61,23 +60,22 @@ def fetch_one(collection, filt, db=GAME_DB):
         return doc
 
 
-def del_one(collection, filt, db=GAME_DB):
+def del_one(collection, filt, db=COMMONGROUND_DB):
     # Find with a filter and return on the first doc found.
 
     client[db][collection].delete_one(filt)
 
 
-def fetch_all(collection, db=GAME_DB):
+def fetch_all(collection, db=COMMONGROUND_DB):
     ret = []
     for doc in client[db][collection].find():
         ret.append(doc)
     return ret
 
 
-def fetch_all_as_dict(key, collection, db=GAME_DB):
+def fetch_all_as_dict(key, collection, db=COMMONGROUND_DB):
     ret = {}
     for doc in client[db][collection].find():
         del doc[MONGO_ID]
         ret[doc[key]] = doc
     return ret
-"""

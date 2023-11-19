@@ -1,20 +1,21 @@
 # interface for our user data
 import random
 
-# import db.db_connect as dbc
-# USERS_COLLECT = "users"
+import db.db_connect as dbc
+USERS_COLLECT = "users"
 
 BIG_NUM = 100000000
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
 
-INTERESTS = 'interests'
 NAME = 'user_name'
-GENDER = ''
-AGE = 22
-TEST_USER_NAME = 'WILL'
+AGE = 'age'
+GENDER = 'gender'
+INTERESTS = 'interests'
+# TEST_USER_NAME = 'WILL'
 
 users = {}
+
 """
 users = {
     'John': {
@@ -46,15 +47,23 @@ def get_test_user():
     test_user = {}
     test_user[NAME] = _get_test_name()
     test_user[AGE] = 18
+    test_user[GENDER] = "male"
+    test_user[INTERESTS] = "hiking"
     return test_user
+
+
+def exists(name: str) -> bool:
+    dbc.connect_db()
+    return dbc.fetch_one(USERS_COLLECT, {NAME: name})
+    # return name in fetch_users()
 
 
 def del_user(name: str):
     """
     A function to remove a user from list of users
     """
-    if name in users:
-        del users[name]
+    if exists(name):
+        return dbc.del_one(USERS_COLLECT, {NAME: name})
     else:
         raise ValueError(f'Delete failure: {name} not in database.')
 
@@ -63,14 +72,8 @@ def fetch_users() -> dict:
     """
     A function to return all users in the data store.
     """
-    return users
-
-
-def exists(name: str) -> bool:
-    """
-    Function to check if user exists, returns bool
-    """
-    return name in fetch_users()
+    dbc.connect_db()
+    return dbc.fetch_all_as_dict(NAME, USERS_COLLECT)
 
 
 def _gen_id() -> str:
@@ -83,11 +86,11 @@ def _gen_id() -> str:
     return _id
 
 
-def add_user(name: str, age: int, gender: str, interest: str) -> str:
+def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     """
     Function to add users. For interests, users only enter 1 interest
     """
-    if name in users:
+    if exists(name):
         raise ValueError(f'Duplicate user name: {name= }')
     if not name:
         raise ValueError("User can't be blank")
@@ -95,11 +98,15 @@ def add_user(name: str, age: int, gender: str, interest: str) -> str:
     # code for adding a user to mongodb as appose to local memory
     # TODO: this code brings up a lot of errors in test_interface.py so
     # commenting out now until class next week
-    # user = {}
-    # user = {NAME: name, AGE: age, GENDER: gender, INTERESTS: interest}
-    # dbc.connect_db()
-    # _id = dbc.insert_one(USERS_COLLECT, user)
-    # return _id is not None
+    user = {}
+    user[NAME] = name
+    user[AGE] = age
+    user[GENDER] = gender
+    user[INTERESTS] = interest
 
-    users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
-    return _gen_id()
+    dbc.connect_db()
+    _id = dbc.insert_one(USERS_COLLECT, user)
+    return _id is not None
+
+    # users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
+    # return _gen_id()

@@ -53,9 +53,11 @@ ADD_USER = "New User"
 
 
 def test_add_user():
-    ret = wrld.add_user(ADD_USER, 30, "Female", "hiking")
-    assert wrld.exists(ADD_USER)
-    assert isinstance(ret, str)
+    new_name = wrld._get_test_name()
+    ret = wrld.add_user(new_name, 30, "Female", "hiking")
+    assert wrld.exists(new_name)
+    assert isinstance(ret, bool)
+    wrld.del_user(new_name)
 
 
 def test_del_user(temp_user):
