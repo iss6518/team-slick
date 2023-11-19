@@ -1,9 +1,13 @@
 # interface for our user data
 import random
 
+# import db.db_connect as dbc
+# USERS_COLLECT = "users"
+
 BIG_NUM = 100000000
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
+
 INTERESTS = 'interests'
 NAME = 'user_name'
 GENDER = ''
@@ -87,5 +91,15 @@ def add_user(name: str, age: int, gender: str, interest: str) -> str:
         raise ValueError(f'Duplicate user name: {name= }')
     if not name:
         raise ValueError("User can't be blank")
+
+    # code for adding a user to mongodb as appose to local memory
+    # TODO: this code brings up a lot of errors in test_interface.py so
+    # commenting out now until class next week
+    # user = {}
+    # user = {NAME: name, AGE: age, GENDER: gender, INTERESTS: interest}
+    # dbc.connect_db()
+    # _id = dbc.insert_one(USERS_COLLECT, user)
+    # return _id is not None
+
     users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
     return _gen_id()

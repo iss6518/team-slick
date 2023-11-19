@@ -40,3 +40,44 @@ def connect_db():
         else:
             print("Connecting to Mongo locally.")
             client = pm.MongoClient()
+
+
+def insert_one(collection, doc, db=COMMONGROUND_DB):
+    """
+    Insert a single doc into collection.
+    """
+    print(f'{db=}')
+    return client[db][collection].insert_one(doc)
+
+
+"""
+def fetch_one(collection, filt, db=GAME_DB):
+    # Find with a filter and return on the first doc found.
+
+    for doc in client[db][collection].find(filt):
+        if MONGO_ID in doc:
+            # Convert mongo ID to a string so it works as JSON
+            doc[MONGO_ID] = str(doc[MONGO_ID])
+        return doc
+
+
+def del_one(collection, filt, db=GAME_DB):
+    # Find with a filter and return on the first doc found.
+
+    client[db][collection].delete_one(filt)
+
+
+def fetch_all(collection, db=GAME_DB):
+    ret = []
+    for doc in client[db][collection].find():
+        ret.append(doc)
+    return ret
+
+
+def fetch_all_as_dict(key, collection, db=GAME_DB):
+    ret = {}
+    for doc in client[db][collection].find():
+        del doc[MONGO_ID]
+        ret[doc[key]] = doc
+    return ret
+"""
