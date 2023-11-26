@@ -6,6 +6,7 @@ The endpoint called `endpoints` will return all available endpoints.
 from flask import Flask
 from flask_restx import Resource, Api
 import db.users as users
+import db.interface as interface
 
 # creating flash application
 app = Flask(__name__)
@@ -17,7 +18,15 @@ MAIN_MENU_NM = "Welcome to Text Game!"
 USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
+
+INTERFACE_EP = '/interfaces'
+INTERFACE_MENU_EP = '/interface_menu'
+INTERFACE_MENU_NM = 'Interface Menu'
+TYPE = 'Type'
 DATA = 'Data'
+MENU = 'Menu'
+TITLE = 'Title'
+RETURN = 'Return'
 
 
 # creating an endpoint for /hello URL
@@ -101,3 +110,22 @@ class Users(Resource):
         This method returns all users.
         """
         return {DATA: users.fetch_users()}
+
+
+@api.route(f'{INTERFACE_EP}')
+class Interface(Resource):
+    """
+    This class supports various operations on our interface, such as
+    listing users, and adding a user.
+    """
+    def get(self):
+        """
+        This method returns all users.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current Users',
+            DATA: interface.fetch_users(),
+            MENU: INTERFACE_MENU_EP,
+            RETURN: INTERFACE_MENU_EP,
+        }
