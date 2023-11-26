@@ -2,8 +2,10 @@
 This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
 """
+from http import HTTPStatus
+import werkzeug.exceptions as wz
 
-from flask import Flask
+from flask import Flask, request
 from flask_restx import Resource, Api
 import db.users as users
 import db.interface as interface
@@ -22,6 +24,8 @@ HELLO_RESP = 'hello'
 INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
+USER_ID = 'User ID'
+
 TYPE = 'Type'
 DATA = 'Data'
 MENU = 'Menu'
@@ -129,3 +133,23 @@ class Interface(Resource):
             MENU: INTERFACE_MENU_EP,
             RETURN: INTERFACE_MENU_EP,
         }
+
+    # @api.expect(game_fields)
+
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Add a user.
+        """
+        name = request.json[interface.NAME]
+        age = request.json[interface.AGE]
+        gender = request.json[interface.GENDER]
+        interests = request.json[interface.INTERESTS]
+        try:
+            new_id = interface.add_user(name, age, gender, interests)
+            if new_id is True:  # add_user return true if _id is None
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            return {USER_ID: new_id}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
