@@ -6,7 +6,7 @@ from http import HTTPStatus
 import werkzeug.exceptions as wz
 
 from flask import Flask, request
-from flask_restx import Resource, Api
+from flask_restx import Resource, Api, fields
 import db.users as users
 import db.interface as interface
 
@@ -118,6 +118,31 @@ class Users(Resource):
         return {DATA: users.fetch_users()}
 
 
+@api.route(f'{DEL_USER_EP}/<name>')
+class DelUser(Resource):
+    """
+    Deletes a user by name
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def delete(self, name):
+        """
+        deletes user by name
+        """
+        try:
+            interface.del_user(name)
+            return {name: 'Deleted'}
+        except ValueError as e:
+            raise wz.NOT_FOUND(f'{str(e)}')
+
+
+user_fields = api.model('NewUser', {
+    interface.NAME: fields.String,
+    interface.AGE: fields.Integer,
+    interface.INTERESTS: fields.String
+})
+
+
 @api.route(f'{INTERFACE_EP}')
 class Interface(Resource):
     """
@@ -136,8 +161,7 @@ class Interface(Resource):
             RETURN: INTERFACE_MENU_EP,
         }
 
-    # @api.expect(game_fields)
-
+    @api.expect(user_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
     def post(self):
@@ -155,21 +179,3 @@ class Interface(Resource):
             return {USER_ID: new_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
-
-
-@api.route(f'{DEL_USER_EP}/<name>')
-class DelUser(Resource):
-    """
-    Deletes a user by name
-    """
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def delete(self, name):
-        """
-        deletes user by name
-        """
-        try:
-            interface.del_user(name)
-            return {name: 'Deleted'}
-        except ValueError as e:
-            raise wz.NOT_FOUND(f'{str(e)}')
