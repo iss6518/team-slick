@@ -17,6 +17,7 @@ MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
 
 # forming some endpoint URLs
+DELETE = 'delete'
 USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
@@ -25,6 +26,7 @@ INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
+DEL_USER_EP = f'{USERS_EP}/{DELETE}'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -153,3 +155,21 @@ class Interface(Resource):
             return {USER_ID: new_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+
+@api.route(f'{DEL_USER_EP}/<name>')
+class DelUser(Resource):
+    """
+    Deletes a user by name
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def delete(self, name):
+        """
+        deletes user by name
+        """
+        try:
+            interface.del_user(name)
+            return {name: 'Deleted'}
+        except ValueError as e:
+            raise wz.NOT_FOUND(f'{str(e)}')
