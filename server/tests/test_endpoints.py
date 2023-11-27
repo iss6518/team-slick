@@ -31,7 +31,7 @@ def test_list_users():
         assert resp.status_code == NOT_ACCEPTABLE
         
 
-    @patch('data.users.add_friend', return_value=users.MOCK_ID, autospec=True)
+    @patch('db.users.add_friend', return_value=users.MOCK_ID, autospec=True)
     def test_games_add(mock_add):
         """
         Testing we do the right thing with a good return from add_game.
@@ -43,3 +43,24 @@ def test_list_users():
                 + ' until it is dealt with at a later time' )
     def test_that_doesnt_work():
         assert False
+
+
+
+# "Skeleton of patches for our del_user function"
+#
+#@patch('db.users.del_user', autospec=True)
+#def test_user_del(mock_del):
+#    """
+#    Testing we do the right thing with a call to del_user that succeeds
+#    """
+#    resp = TEST_CLIENT.delete(f'{ep.DEL_USER_EP}/AnyName')
+#    assert resp.status_code == OK
+#    
+#    
+#@patch('db.users.del_user', side_effect = ValueError(), autospec=True)
+#def test_user_bad_del(mock_del):
+#    """
+#    Testing we do the right thing with a value error from  del_user
+#    """
+#    resp = TEST_CLIENT.delete(f'{ep.DEL_USER_EP}/AnyName')
+#    assert resp.status_code == NOT_FOUND
