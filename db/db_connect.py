@@ -5,7 +5,7 @@ import pymongo as pm
 LOCAL = "0"
 CLOUD = "1"
 
-COMMONGROUND_DB = 'commonGroundDB'
+COMMONGROUND_DB = 'commongroundDB'
 
 client = None
 
