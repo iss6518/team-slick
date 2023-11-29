@@ -139,6 +139,7 @@ class DelUser(Resource):
 user_fields = api.model('NewUser', {
     interface.NAME: fields.String,
     interface.AGE: fields.Integer,
+    interface.GENDER: fields.String,
     interface.INTERESTS: fields.String
 })
 
@@ -174,7 +175,7 @@ class Interface(Resource):
         interests = request.json[interface.INTERESTS]
         try:
             new_id = interface.add_user(name, age, gender, interests)
-            if new_id is True:  # add_user return true if _id is None
+            if new_id is False:  # add_user return true if _id is None
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {USER_ID: new_id}
         except ValueError as e:
