@@ -110,3 +110,15 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
 
     # users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
     # return _gen_id()
+
+
+def update_user(name: str, age: int, gender: str, interest: str) -> bool:
+    """
+    Function to update users (depending on field we want to change)
+    """
+    if exists(name):
+        raise ValueError(f'Duplicate user name: {name= }')
+    if not name:
+        raise ValueError("User can't be blank")
+
+    return False

@@ -180,3 +180,22 @@ class Interface(Resource):
             return {USER_ID: new_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+    @api.expect(user_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def updateUser(self):
+        """
+        Update a user.
+        """
+        name = request.json[interface.NAME]
+        age = request.json[interface.AGE]
+        gender = request.json[interface.GENDER]
+        interests = request.json[interface.INTERESTS]
+        try:
+            updated_id = interface.update_user(name, age, gender, interests)
+            if updated_id is False:  # updated user rtn F if new id not created
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            return {USER_ID: updated_id}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
