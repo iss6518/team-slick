@@ -112,13 +112,21 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     # return _gen_id()
 
 
-def update_user(name: str, age: int, gender: str, interest: str) -> bool:
+def update_user(name: str, newValues: dict) -> bool:
     """
     Function to update users (depending on field we want to change)
     """
-    if exists(name):
-        raise ValueError(f'Duplicate user name: {name= }')
     if not name:
         raise ValueError("User can't be blank")
 
-    return False
+    # currUserDict = dbc.fetch_one(USERS_COLLECT, {NAME: name})
+    # filter = {age: 12, gender: male}
+    """for key in filter:
+        currUserDict[key] = filter[key]"""
+
+    filter = {NAME: name}
+    setValues = {"$set": newValues}
+
+    dbc.connect_db()
+    _id = dbc.update_one(USERS_COLLECT, filter, setValues)
+    return _id is not None

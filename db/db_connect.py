@@ -50,6 +50,14 @@ def insert_one(collection, doc, db=COMMONGROUND_DB):
     return client[db][collection].insert_one(doc)
 
 
+def update_one(collection, filter, doc, db=COMMONGROUND_DB):
+    """
+    Update a single doc into collection.
+    """
+    print(f'{db=}')
+    return client[db][collection].update_one(filter, doc)
+
+
 def fetch_one(collection, filt, db=COMMONGROUND_DB):
     # Find with a filter and return on the first doc found.
 

@@ -71,5 +71,10 @@ def test_del_user_not_there():
     with pytest.raises(ValueError):
         wrld.del_user(name)
 
-
-
+def test_update_user():
+    new_name = wrld._get_test_name()
+    ret = wrld.add_user(new_name, 30, "Female", "hiking")
+    wrld.update_user(new_name, {wrld.AGE: 27, wrld.GENDER: "male"})
+    assert wrld.exists(new_name)
+    assert isinstance(ret, bool)
+    wrld.del_user(new_name)
