@@ -220,7 +220,7 @@ class Unmatch(Resource):
         Allows a user to unmatch with another user.
         """
         try:
-            interface.unmatch_users(user_name, other_user_name)
+            interface.unmatch_users(name, other_user_name)
             return {'Message': 'Users unmatched successfully'}
         except ValueError as e:
             raise wz.NOT_FOUND(f'{str(e)}')
