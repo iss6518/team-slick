@@ -209,19 +209,18 @@ class Interface(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
-@api.route(f'{UNMATCH_EP}/<user_id>/<other_user_id>')
+@api.route(f'{UNMATCH_EP}/<name>/<other_user_name>')
 class Unmatch(Resource):
     """
     This class allows a user to unmatch with another user.
     """
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def delete(self, user_id, other_user_id):
+    @api.expect(user_fields)
+    def delete(self, name, other_user_name):
         """
         Allows a user to unmatch with another user.
         """
         try:
-            interface.unmatch_users(user_id, other_user_id)
+            interface.unmatch_users(user_name, other_user_name)
             return {'Message': 'Users unmatched successfully'}
         except ValueError as e:
             raise wz.NOT_FOUND(f'{str(e)}')
