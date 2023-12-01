@@ -21,13 +21,14 @@ DELETE = 'delete'
 USERS_EP = '/users'
 HELLO_EP = '/hello'
 HELLO_RESP = 'hello'
+UNMATCH_USERS = 'unmatch'
 
 INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
 DEL_USER_EP = f'{USERS_EP}/{DELETE}'
-UNMATCH_EP = f'{USERS_EP}/unmatch'
+UNMATCH_EP = f'{USERS_EP}/{UNMATCH_USERS}'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -215,6 +216,8 @@ class Unmatch(Resource):
     This class allows a user to unmatch with another user.
     """
     @api.expect(user_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
     def delete(self, name, other_user_name):
         """
         Allows a user to unmatch with another user.
