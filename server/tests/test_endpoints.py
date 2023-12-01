@@ -64,8 +64,8 @@ def test_update_user_success(mock_add):
     assert resp.status_code == OK
 
 
-@patch('db.interface.unmatch_user', side_effect=ValueError(), autospec=True)
-def test_for_users_unmatch_user(mock_add):
+@patch('db.interface.unmatch_users', side_effect=ValueError(), autospec=True)
+def test_for_users_unmatch_users(mock_add):
     resp = TEST_CLIENT.put(ep.INTERFACE_EP, json=mockValues)
     assert resp.status_code == NOT_ACCEPTABLE
 
