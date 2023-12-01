@@ -78,3 +78,8 @@ def test_update_user():
     assert wrld.exists(new_name)
     assert isinstance(ret, bool)
     wrld.del_user(new_name)
+
+def test_unmatch_users(temp_user):
+    name = wrld._get_test_name()
+    if temp_user in name.user_connections:
+        assert isinstance(name.user_connections, dict)

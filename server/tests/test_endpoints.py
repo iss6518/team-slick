@@ -64,10 +64,11 @@ def test_update_user_success(mock_add):
     assert resp.status_code == OK
 
 
-@patch('db.interface.unmatch_users', side_effect=ValueError(), autospec=True)
-def test_for_users_unmatch_users(mock_add):
+@patch('db.interface.unmatch_users', return_value=True, autospec=True)
+def test_for_users_unmatch_users_success(mock_add):
     resp = TEST_CLIENT.put(ep.INTERFACE_EP, json=mockValues)
-    assert resp.status_code == NOT_ACCEPTABLE
+    assert resp.status_code == OK
+
 
 # # "Skeleton of patches for our del_user function"
 # #
