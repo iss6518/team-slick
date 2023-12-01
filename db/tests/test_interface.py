@@ -81,5 +81,5 @@ def test_update_user():
 
 def test_unmatch_users(temp_user):
     name = wrld._get_test_name()
-    if temp_user in name.user_connections:
-        assert isinstance(name.user_connections, dict)
+    if temp_user in wrld.user_connections:
+        assert isinstance(wrld.user_connections, dict)
