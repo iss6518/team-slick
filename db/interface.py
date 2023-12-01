@@ -15,6 +15,7 @@ INTERESTS = 'interests'
 # TEST_USER_NAME = 'WILL'
 
 users = {}
+user_connections = {}
 
 """
 users = {
@@ -130,3 +131,24 @@ def update_user(name: str, newValues: dict) -> bool:
     dbc.connect_db()
     _id = dbc.update_one(USERS_COLLECT, filter, setValues)
     return _id is not None
+
+
+# dummy function to unmatch users. Eventually update to connect with mongodb
+def unmatch_users(name: str, other_user_name: str):
+    """
+    Unmatches two users by removing their connection.
+    """
+    if name not in user_connections or other_user_name not in user_connections:
+        raise ValueError('User not found')
+
+    # Remove the match for name
+    if other_user_name in user_connections[name]:
+        user_connections[name].remove(other_user_name)
+    else:
+        raise ValueError('Users are not matched')
+
+    # Remove the match for other_user_name
+    if name in user_connections[other_user_name]:
+        user_connections[other_user_name].remove(name)
+    else:
+        raise ValueError('Users are no longer matched')

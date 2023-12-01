@@ -27,6 +27,7 @@ INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
 DEL_USER_EP = f'{USERS_EP}/{DELETE}'
+UNMATCH_EP = f'{USERS_EP}/unmatch'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -206,3 +207,22 @@ class Interface(Resource):
             return {USER_ID: updated_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+
+@api.route(f'{UNMATCH_EP}/<user_id>/<other_user_id>')
+class Unmatch(Resource):
+    """
+    This class allows a user to unmatch with another user.
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def delete(self, user_id, other_user_id):
+        """
+        Allows a user to unmatch with another user.
+        """
+        try:
+            interface.unmatch_users(user_id, other_user_id)
+            return {'Message': 'Users unmatched successfully'}
+        except ValueError as e:
+            raise wz.NOT_FOUND(f'{str(e)}')
+
