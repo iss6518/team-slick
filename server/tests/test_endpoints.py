@@ -72,13 +72,13 @@ def test_for_users_unmatch_users_success(mock_add):
 
 # # "Skeleton of patches for our del_user function"
 # #
-# #@patch('db.users.del_user', autospec=True)
-# #def test_user_del(mock_del):
-# #    """
-# #    Testing we do the right thing with a call to del_user that succeeds
-# #    """
-# #    resp = TEST_CLIENT.delete(f'{ep.DEL_USER_EP}/AnyName')
-# #    assert resp.status_code == OK
+@patch('db.interface.del_user', return_value = True, autospec=True)
+def test_user_del(mock_del):
+    """
+    Testing we do the right thing with a call to del_user that succeeds
+    """
+    resp = TEST_CLIENT.delete(ep.INTERFACE_EP, json = mockValues)
+    assert resp.status_code == OK
 # #    
 # #    
 # #@patch('db.users.del_user', side_effect = ValueError(), autospec=True)

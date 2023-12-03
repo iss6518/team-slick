@@ -120,23 +120,21 @@ class Users(Resource):
         return {DATA: users.fetch_users()}
 
 
+"""
 @api.route(f'{DEL_USER_EP}/<name>')
 class DelUser(Resource):
-    """
-    Deletes a user by name
-    """
+
+    #Deletes a user by name
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def delete(self, name):
-        """
-        deletes user by name
-        """
+        #deletes user by name
         try:
             interface.del_user(name)
             return {name: 'Deleted'}
         except ValueError as e:
             raise wz.NOT_FOUND(f'{str(e)}')
-
+"""
 
 user_fields = api.model('NewUser', {
     interface.NAME: fields.String,
@@ -208,6 +206,19 @@ class Interface(Resource):
             return {USER_ID: updated_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def delete(self):
+        """
+        deletes user by name
+        """
+        name = request.json[interface.NAME]
+        try:
+            interface.del_user(name)
+            return {name: 'Deleted'}
+        except ValueError as e:
+            raise wz.NOT_FOUND(f'{str(e)}')
 
 
 @api.route(f'{UNMATCH_EP}/<name>/<other_user_name>')
