@@ -147,6 +147,21 @@ def unmatch_users(name: str, other_user_name: str):
     try:
         dbc.del_one(MATCHES_COLLECT, {NAME: name, OTHER_USER: other_user_name})
         dbc.del_one(MATCHES_COLLECT, {NAME: other_user_name, OTHER_USER: name})
-    except ValueError:
-        print('users are not matched')
+    except ValueError as e:
+        raise ValueError('Users are not matched')
+
+# function to unmatch users
+def match_users(name: str, other_user_name: str):
+    """
+    Match two users by removing their connection.
+    """
+    if (not exists(name)) or (not exists(other_user_name)):
+        raise ValueError('Invlaid entry')
+
+    # Remove the match for name
+    dbc.connect_db()
+    try:
+        dbc.insert_one(MATCHES_COLLECT, {NAME: name, OTHER_USER: other_user_name})
+        dbc.insert_one(MATCHES_COLLECT, {NAME: other_user_name, OTHER_USER: name})
+    except ValueError as e:
         raise ValueError('Users are not matched')

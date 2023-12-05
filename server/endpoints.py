@@ -27,7 +27,7 @@ INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
-UNMATCH_EP = '/unmatch'
+MATCHES_EP = '/matches'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -226,8 +226,8 @@ match_fields = api.model('matchUser', {
 })
 
 
-@api.route(f'{UNMATCH_EP}')
-class Unmatch(Resource):
+@api.route(f'{MATCHES_EP}')
+class Matches(Resource):
     """
     This class allows a user to unmatch with another user.
     """
@@ -245,3 +245,18 @@ class Unmatch(Resource):
             return {'Message': 'Users unmatched successfully'}
         except ValueError as e:
             raise wz.NOT_FOUND(f'{str(e)}')
+
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Allows a user to match with another user.
+        """
+            name = request.json[interface.NAME]
+            other_user_name = request.json[interface.OTHER_USER]
+            try:
+                interface.match_users(name, other_user_name)
+                return {'Message': 'Users matched successfully'}
+            except ValueError as e:
+                raise wz.NOT_FOUND(f'{str(e)}')

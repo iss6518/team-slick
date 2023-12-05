@@ -71,10 +71,9 @@ mockMatchValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherNam
 
 @patch('db.interface.unmatch_users', return_value=True, autospec=True)
 def test_unmatch_users_success(mock_add):
-    resp = TEST_CLIENT.delete(ep.UNMATCH_EP, json=mockMatchValues)
+    resp = TEST_CLIENT.delete(ep.MATCHES_EP, json=mockMatchValues)
     assert resp.status_code == OK
-
-
+    
 # # "Skeleton of patches for our del_user function"
 # #
 @patch('db.interface.del_user', return_value = True, autospec=True)
