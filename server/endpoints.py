@@ -207,7 +207,7 @@ class Interface(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
     @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Found')
     def delete(self):
         """
         deletes user by name
@@ -217,7 +217,7 @@ class Interface(Resource):
             interface.del_user(name)
             return {name: 'Deleted'}
         except ValueError as e:
-            raise wz.NOT_FOUND(f'{str(e)}')
+            raise wz.NotAcceptable(f'{str(e)}')
 
 
 match_fields = api.model('matchUser', {
@@ -244,7 +244,7 @@ class Matches(Resource):
             interface.unmatch_users(name, other_user_name)
             return {'Message': 'Users unmatched successfully'}
         except ValueError as e:
-            raise wz.NOT_FOUND(f'{str(e)}')
+            raise wz.NotAcceptable(f'{str(e)}')
 
     @api.expect(match_fields)
     @api.response(HTTPStatus.OK, 'Success')
@@ -253,10 +253,10 @@ class Matches(Resource):
         """
         Allows a user to match with another user.
         """
-            name = request.json[interface.NAME]
-            other_user_name = request.json[interface.OTHER_USER]
-            try:
-                interface.match_users(name, other_user_name)
-                return {'Message': 'Users matched successfully'}
-            except ValueError as e:
-                raise wz.NOT_FOUND(f'{str(e)}')
+        name = request.json[interface.NAME]
+        other_user_name = request.json[interface.OTHER_USER]
+        try:
+            interface.match_users(name, other_user_name)
+            return {'Message': 'Users matched successfully'}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')

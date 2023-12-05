@@ -147,8 +147,9 @@ def unmatch_users(name: str, other_user_name: str):
     try:
         dbc.del_one(MATCHES_COLLECT, {NAME: name, OTHER_USER: other_user_name})
         dbc.del_one(MATCHES_COLLECT, {NAME: other_user_name, OTHER_USER: name})
-    except ValueError as e:
-        raise ValueError('Users are not matched')
+    except ValueError:
+        raise ValueError('Users are not unmatched')
+
 
 # function to unmatch users
 def match_users(name: str, other_user_name: str):
@@ -160,8 +161,10 @@ def match_users(name: str, other_user_name: str):
 
     # Remove the match for name
     dbc.connect_db()
+    MATCHA = {NAME: name, OTHER_USER: other_user_name}
+    MATCHB = {NAME: other_user_name, OTHER_USER: name}
     try:
-        dbc.insert_one(MATCHES_COLLECT, {NAME: name, OTHER_USER: other_user_name})
-        dbc.insert_one(MATCHES_COLLECT, {NAME: other_user_name, OTHER_USER: name})
-    except ValueError as e:
+        dbc.insert_one(MATCHES_COLLECT, MATCHA)
+        dbc.insert_one(MATCHES_COLLECT, MATCHB)
+    except ValueError:
         raise ValueError('Users are not matched')
