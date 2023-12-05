@@ -14,6 +14,7 @@ AGE = 'age'
 GENDER = 'gender'
 INTERESTS = 'interests'
 OTHER_USER = 'other_user'
+ID = '_id'
 
 users = {}
 user_connections = {}
@@ -134,6 +135,11 @@ def update_user(name: str, newValues: dict) -> bool:
     return _id is not None
 
 
+def match_exists(matchID) -> bool:
+    dbc.connect_db()
+    return dbc.fetch_one(MATCHES_COLLECT, {ID: matchID})
+
+
 # function to unmatch users
 def unmatch_users(name: str, other_user_name: str):
     """
@@ -152,7 +158,7 @@ def unmatch_users(name: str, other_user_name: str):
 
 
 # function to unmatch users
-def match_users(name: str, other_user_name: str):
+def match_users(name: str, other_user_name: str) -> bool:
     """
     Match two users by removing their connection.
     """
@@ -163,8 +169,7 @@ def match_users(name: str, other_user_name: str):
     dbc.connect_db()
     MATCHA = {NAME: name, OTHER_USER: other_user_name}
     MATCHB = {NAME: other_user_name, OTHER_USER: name}
-    try:
-        dbc.insert_one(MATCHES_COLLECT, MATCHA)
-        dbc.insert_one(MATCHES_COLLECT, MATCHB)
-    except ValueError:
-        raise ValueError('Users are not matched')
+
+    _id1 = dbc.insert_one(MATCHES_COLLECT, MATCHA)
+    _id2 = dbc.insert_one(MATCHES_COLLECT, MATCHB)
+    return _id1 is not None and _id2 is not None

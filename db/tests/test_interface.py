@@ -79,7 +79,25 @@ def test_update_user():
     assert isinstance(ret, bool)
     wrld.del_user(new_name)
 
-def test_unmatch_users(temp_user):
-    name = wrld._get_test_name()
-    if temp_user in wrld.user_connections:
-        assert isinstance(wrld.user_connections, dict)
+def test_match_users():
+    new_name = wrld._get_test_name()
+    ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
+    new_name2 = wrld._get_test_name()
+    ret2 = wrld.add_user(new_name2, 30, "Female", "hiking")
+
+    matching = wrld.match_users(new_name, new_name2)
+    # assert wrld.match_exists(IDTuple[0])
+    # assert wrld.match_exists(IDTuple[1])
+    assert isinstance(matching, bool)
+    wrld.unmatch_users(new_name, new_name2)
+    wrld.del_user(new_name)
+    wrld.del_user(new_name2)
+
+"""
+def test_unmatch_users():
+    wrld.unmatch_users(new_name, new_name2)
+    assert wrld.exists(new_name)
+    assert isinstance(ret, bool)
+    wrld.del_user(new_name)
+    wrld.del_user(new_name2)
+"""
