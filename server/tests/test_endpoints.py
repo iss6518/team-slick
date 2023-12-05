@@ -53,7 +53,7 @@ mockValues = {interface.NAME: mockName, interface.AGE: mockAge, interface.GENDER
 def test_for_users_bad_update(mock_add):
     resp = TEST_CLIENT.put(ep.INTERFACE_EP, json=mockValues)
     assert resp.status_code == NOT_ACCEPTABLE
-    
+ 
 
 @patch('db.interface.update_user', return_value=True, autospec=True)
 def test_update_user_success(mock_add):
@@ -64,9 +64,14 @@ def test_update_user_success(mock_add):
     assert resp.status_code == OK
 
 
+mock2Name = "Dareck"
+mockOtherName = "John"
+mockMatchValues = {interface.NAME: mock2Name, interface.OTHERNAME: mockOtherName}
+
+
 @patch('db.interface.unmatch_users', return_value=True, autospec=True)
 def test_for_users_unmatch_users_success(mock_add):
-    resp = TEST_CLIENT.put(ep.INTERFACE_EP, json=mockValues)
+    resp = TEST_CLIENT.delete(ep.UNMATCH_EP, json=mockMatchValues)
     assert resp.status_code == OK
 
 
@@ -79,8 +84,8 @@ def test_user_del(mock_del):
     """
     resp = TEST_CLIENT.delete(ep.INTERFACE_EP, json = mockValues)
     assert resp.status_code == OK
-# #    
-# #    
+# #
+# #
 # #@patch('db.users.del_user', side_effect = ValueError(), autospec=True)
 # #def test_user_bad_del(mock_del):
 # #    """

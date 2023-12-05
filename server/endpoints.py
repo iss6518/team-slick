@@ -27,7 +27,6 @@ INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
-DEL_USER_EP = f'{USERS_EP}/{DELETE}'
 UNMATCH_EP = f'{USERS_EP}/{UNMATCH_USERS}'
 
 TYPE = 'Type'
@@ -221,18 +220,26 @@ class Interface(Resource):
             raise wz.NOT_FOUND(f'{str(e)}')
 
 
-@api.route(f'{UNMATCH_EP}/<name>/<other_user_name>')
+match_fields = api.model('matchUser', {
+    interface.NAME: fields.String,
+    interface.OTHERNAME: fields.String,
+})
+
+
+@api.route(f'{UNMATCH_EP}')
 class Unmatch(Resource):
     """
     This class allows a user to unmatch with another user.
     """
-    @api.expect(user_fields)
+    @api.expect(match_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
-    def delete(self, name, other_user_name):
+    def delete(self):
         """
         Allows a user to unmatch with another user.
         """
+        name = request.json[interface.NAME]
+        other_user_name = request.json[interface.OTHERNAME]
         try:
             interface.unmatch_users(name, other_user_name)
             return {'Message': 'Users unmatched successfully'}
