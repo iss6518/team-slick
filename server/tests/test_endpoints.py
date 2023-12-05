@@ -66,11 +66,11 @@ def test_update_user_success(mock_add):
 
 mock2Name = "Dareck"
 mockOtherName = "John"
-mockMatchValues = {interface.NAME: mock2Name, interface.OTHERNAME: mockOtherName}
+mockMatchValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 
 
 @patch('db.interface.unmatch_users', return_value=True, autospec=True)
-def test_for_users_unmatch_users_success(mock_add):
+def test_unmatch_users_success(mock_add):
     resp = TEST_CLIENT.delete(ep.UNMATCH_EP, json=mockMatchValues)
     assert resp.status_code == OK
 

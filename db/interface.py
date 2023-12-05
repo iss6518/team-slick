@@ -3,6 +3,7 @@ import random
 
 import db.db_connect as dbc
 USERS_COLLECT = "users"
+MATCHES_COLLECT = "matches"
 
 BIG_NUM = 100000000
 ID_LEN = 24
@@ -12,7 +13,7 @@ NAME = 'user_name'
 AGE = 'age'
 GENDER = 'gender'
 INTERESTS = 'interests'
-# TEST_USER_NAME = 'WILL'
+OTHER_USER = 'other_user'
 
 users = {}
 user_connections = {}
@@ -142,7 +143,10 @@ def unmatch_users(name: str, other_user_name: str):
         raise ValueError('Invlaid entry')
 
     # Remove the match for name
-    if other_user_name in user_connections:
-        user_connections.remove(other_user_name)
-    else:
+    dbc.connect_db()
+    try:
+        dbc.del_one(MATCHES_COLLECT, {NAME: name, OTHER_USER: other_user_name})
+        dbc.del_one(MATCHES_COLLECT, {NAME: other_user_name, OTHER_USER: name})
+    except ValueError:
+        print('users are not matched')
         raise ValueError('Users are not matched')

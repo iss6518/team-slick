@@ -27,7 +27,7 @@ INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
-UNMATCH_EP = f'{USERS_EP}/{UNMATCH_USERS}'
+UNMATCH_EP = '/unmatch'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -222,7 +222,7 @@ class Interface(Resource):
 
 match_fields = api.model('matchUser', {
     interface.NAME: fields.String,
-    interface.OTHERNAME: fields.String,
+    interface.OTHER_USER: fields.String,
 })
 
 
@@ -239,7 +239,7 @@ class Unmatch(Resource):
         Allows a user to unmatch with another user.
         """
         name = request.json[interface.NAME]
-        other_user_name = request.json[interface.OTHERNAME]
+        other_user_name = request.json[interface.OTHER_USER]
         try:
             interface.unmatch_users(name, other_user_name)
             return {'Message': 'Users unmatched successfully'}
