@@ -1,6 +1,6 @@
 echo "Importing from common.sh"
 
-DB=
+DB=commongroundDB
 USER= 
 CONNECT_STR="mongodb+srv://koukoumongo1.yuf9b.mongodb.net/"
 if [ -z $DATA_DIR ]
@@ -11,10 +11,10 @@ BKUP_DIR=$DATA_DIR/bkup
 EXP=/usr/local/bin/mongoexport
 IMP=/usr/local/bin/mongoimport
 
-if [ -z $MONGO_PSSWD ]
+if [ -z $MONGODB_PASSWORD ]
 then
-    echo "You must set MONGO_PASSWD in your env before running this script."
+    echo "You must set MONGODB_PASSWORD in your env before running this script."
     exit 1
 fi 
 
-declare -a 
+declare -a MatchesCollections=("matches" "users")
