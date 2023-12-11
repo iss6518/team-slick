@@ -1,3 +1,6 @@
+#!/bin/sh
+# Some common shell stuff.
+
 echo "Importing from common.sh"
 
 DB=commongroundDB
@@ -5,7 +8,7 @@ USER=iccha02
 CONNECT_STR="mongodb+srv://koukoumongo1.yuf9b.mongodb.net/"
 if [ -z $DATA_DIR ]
 then 
-    DATA_DIR=/mnt/c/SWE Team Slick/team-slick
+    DATA_DIR=~/team-slick/db
 fi 
 BKUP_DIR=$DATA_DIR/bkup
 EXP=/usr/local/bin/mongoexport
