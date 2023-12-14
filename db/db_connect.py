@@ -2,6 +2,12 @@ import os
 
 import pymongo as pm
 
+import certifi
+
+# import ssl
+
+ca = certifi.where()
+
 LOCAL = "0"
 CLOUD = "1"
 
@@ -30,7 +36,9 @@ def connect_db():
             print("Connecting to Mongo in the cloud.")
             client = pm.MongoClient(f'mongodb+srv://iccha02:{password}'
                                     + '@atlascluster.xd0fj6a.mongodb.net/'
-                                    + '?retryWrites=true&w=majority')
+                                    + '?retryWrites=true&w=majority',
+                                    tls=False)
+            # atlascluster.xd0fj6a.mongodb.net
             # PA recommends these settings:
             # + 'connectTimeoutMS=30000&'
             # + 'socketTimeoutMS=None
