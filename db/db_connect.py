@@ -2,11 +2,11 @@ import os
 
 import pymongo as pm
 
-import certifi
+# import certifi
 
 # import ssl
 
-ca = certifi.where()
+# ca = certifi.where()
 
 LOCAL = "0"
 CLOUD = "1"
