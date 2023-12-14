@@ -15,6 +15,7 @@ GENDER = 'gender'
 INTERESTS = 'interests'
 OTHER_USER = 'other_user'
 ID = '_id'
+FAVORITE = 'favorite'
 
 users = {}
 user_connections = {}
@@ -140,6 +141,30 @@ def match_exists(matchID) -> bool:
     return dbc.fetch_one(MATCHES_COLLECT, {ID: matchID})
 
 
+def fetch_matches() -> dict:
+    """
+    A function to return all matches in the data store.
+    """
+    dbc.connect_db()
+    return dbc.fetch_all_as_dict(ID, MATCHES_COLLECT)
+
+
+def update_match(name: str, otherName: str) -> bool:
+    """
+    Function to update match (depending on field we want to change)
+    """
+    if not name:  # TODO should use match_exits func ***
+        raise ValueError("Match can't be blank")
+
+    filter = {NAME: name, OTHER_USER: otherName}
+    thisMatch = dbc.fetch_one(MATCHES_COLLECT, filter)
+    setValues = {"$set": {FAVORITE: (thisMatch[FAVORITE])}}
+
+    dbc.connect_db()
+    _id = dbc.update_one(MATCHES_COLLECT, filter, setValues)
+    return _id is not None
+
+
 # function to unmatch users
 def unmatch_users(name: str, other_user_name: str):
     """
@@ -157,18 +182,18 @@ def unmatch_users(name: str, other_user_name: str):
         raise ValueError('Users are not unmatched')
 
 
-# function to unmatch users
+# function to match users
 def match_users(name: str, other_user_name: str) -> bool:
     """
-    Match two users by removing their connection.
+    Match two users by adding their connection.
     """
     if (not exists(name)) or (not exists(other_user_name)):
         raise ValueError('Invlaid entry')
 
-    # Remove the match for name
+    # Add the match for name
     dbc.connect_db()
-    MATCHA = {NAME: name, OTHER_USER: other_user_name}
-    MATCHB = {NAME: other_user_name, OTHER_USER: name}
+    MATCHA = {NAME: name, OTHER_USER: other_user_name, FAVORITE: False}
+    MATCHB = {NAME: other_user_name, OTHER_USER: name, FAVORITE: False}
 
     _id1 = dbc.insert_one(MATCHES_COLLECT, MATCHA)
     _id2 = dbc.insert_one(MATCHES_COLLECT, MATCHB)

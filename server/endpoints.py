@@ -28,6 +28,7 @@ INTERFACE_MENU_EP = '/interface_menu'
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
 MATCHES_EP = '/matches'
+MATCH_ID = 'Match ID'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -119,22 +120,6 @@ class Users(Resource):
         return {DATA: users.fetch_users()}
 
 
-"""
-@api.route(f'{DEL_USER_EP}/<name>')
-class DelUser(Resource):
-
-    #Deletes a user by name
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
-    def delete(self, name):
-        #deletes user by name
-        try:
-            interface.del_user(name)
-            return {name: 'Deleted'}
-        except ValueError as e:
-            raise wz.NOT_FOUND(f'{str(e)}')
-"""
-
 user_fields = api.model('NewUser', {
     interface.NAME: fields.String,
     interface.AGE: fields.Integer,
@@ -222,7 +207,7 @@ class Interface(Resource):
 
 match_fields = api.model('matchUser', {
     interface.NAME: fields.String,
-    interface.OTHER_USER: fields.String,
+    interface.OTHER_USER: fields.String
 })
 
 
@@ -231,6 +216,19 @@ class Matches(Resource):
     """
     This class allows a user to unmatch with another user.
     """
+
+    def get(self):
+        """
+        This method returns all matches.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current Matches',
+            DATA: interface.fetch_matches(),
+            MENU: INTERFACE_MENU_EP,
+            RETURN: INTERFACE_MENU_EP,
+        }
+
     @api.expect(match_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
@@ -258,5 +256,23 @@ class Matches(Resource):
         try:
             interface.match_users(name, other_user_name)
             return {'Message': 'Users matched successfully'}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
+
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def put(self):
+        """
+        Update a match.
+        """
+        name = request.json[interface.NAME]
+        otherName = request.json[interface.OTHER_USER]
+
+        try:
+            updated_id = interface.update_match(name, otherName)
+            if updated_id is False:
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            return {MATCH_ID: updated_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
