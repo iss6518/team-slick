@@ -30,6 +30,10 @@ USER_ID = 'User ID'
 MATCHES_EP = '/matches'
 MATCH_ID = 'Match ID'
 
+FRIENDREQ_EP = '/friendReq'
+FRIENDREQ_ID = 'FriendReq ID'
+
+
 TYPE = 'Type'
 DATA = 'Data'
 MENU = 'Menu'
@@ -271,6 +275,98 @@ class Matches(Resource):
 
         try:
             updated_id = interface.update_match(name, otherName)
+            if updated_id is False:
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            return {MATCH_ID: updated_id}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
+
+
+# THIS IS FOR FRIEND REQUESTS:
+@api.route(f'{FRIENDREQ_EP}')
+class FriendReqs(Resource):
+    """
+    This class allows a user to send a friend request to another user.
+    The user can accept or decline this.
+    """
+
+    def get(self):
+        """
+        This method returns all friend requests.
+        """
+        return {
+            TYPE: DATA,
+            TITLE: 'Current FriendRequests',
+            DATA: interface.fetch_friendReqs(),
+            MENU: INTERFACE_MENU_EP,
+            RETURN: INTERFACE_MENU_EP,
+        }
+
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def delete(self):
+        """
+        Allows a user to RETRACT a friend request.
+        """
+        name = request.json[interface.NAME]
+        other_user_name = request.json[interface.OTHER_USER]
+        try:
+            interface.deleteFriendReq(name, other_user_name)
+            return {'Message': 'Users friend request retracted successfully'}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
+
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+        """
+        Allows a user to send a friend request to another user.
+        """
+        name = request.json[interface.NAME]
+        other_user_name = request.json[interface.OTHER_USER]
+        try:
+            interface.sendFriendRequest(name, other_user_name)
+            return {'Message': 'Users sent a friend request successfully'}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
+
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def put(self):
+        """
+        Decline a friend request.
+        """
+        name = request.json[interface.NAME]
+        otherName = request.json[interface.OTHER_USER]
+
+        try:
+            updated_id = interface.deleteFriendReq(name, otherName)
+            # Once user declines, friendReq should be deleted for both users
+            if updated_id is False:
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            return {MATCH_ID: updated_id}
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
+
+
+@api.route(f'{FRIENDREQ_EP}')
+class FriendReqsAccept(Resource):
+    @api.expect(match_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def put(self):
+        """
+        Accept a friend request.
+        """
+        name = request.json[interface.NAME]
+        otherName = request.json[interface.OTHER_USER]
+
+        try:
+            updated_id = interface.acceptFriendReq(name, otherName)
+            # Once user accepts, friendReq should be DELETED for both users
             if updated_id is False:
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {MATCH_ID: updated_id}
