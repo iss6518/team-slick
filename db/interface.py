@@ -146,7 +146,9 @@ def fetch_matches() -> dict:
     A function to return all matches in the data store.
     """
     dbc.connect_db()
-    return dbc.fetch_all_as_dict(ID, MATCHES_COLLECT)
+    docs = dbc.fetch_all_as_dict(NAME, MATCHES_COLLECT)
+    print(docs)
+    return docs
 
 
 def update_match(name: str, otherName: str) -> bool:
@@ -158,7 +160,7 @@ def update_match(name: str, otherName: str) -> bool:
 
     filter = {NAME: name, OTHER_USER: otherName}
     thisMatch = dbc.fetch_one(MATCHES_COLLECT, filter)
-    setValues = {"$set": {FAVORITE: (thisMatch[FAVORITE])}}
+    setValues = {"$set": {FAVORITE: not (thisMatch[FAVORITE])}}
 
     dbc.connect_db()
     _id = dbc.update_one(MATCHES_COLLECT, filter, setValues)

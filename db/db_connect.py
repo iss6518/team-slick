@@ -92,6 +92,7 @@ def fetch_all(collection, db=COMMONGROUND_DB):
 def fetch_all_as_dict(key, collection, db=COMMONGROUND_DB):
     ret = {}
     for doc in client[db][collection].find():
+        print(doc)
         del doc[MONGO_ID]
         ret[doc[key]] = doc
     return ret
