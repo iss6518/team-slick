@@ -102,12 +102,11 @@ def test_user_del(mock_del):
     """
     resp = TEST_CLIENT.delete(ep.INTERFACE_EP, json = mockValues)
     assert resp.status_code == OK
-# #
-# #
-# #@patch('db.users.del_user', side_effect = ValueError(), autospec=True)
-# #def test_user_bad_del(mock_del):
-# #    """
-# #    Testing we do the right thing with a value error from  del_user
-# #    """
-# #    resp = TEST_CLIENT.delete(f'{ep.DEL_USER_EP}/AnyName')
-# #    assert resp.status_code == NOT_FOUND
+
+@patch('db.interface.del_user', side_effect = ValueError(), autospec=True)
+def test_user_bad_del(mock_del):
+   """
+    Testing we do the right thing with a value error from  del_user
+    """
+   resp = TEST_CLIENT.delete(f'{ep.INTERFACE_EP}/AnyName')
+   assert resp.status_code == NOT_FOUND

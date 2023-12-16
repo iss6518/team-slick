@@ -93,11 +93,18 @@ def test_match_users():
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
 
-"""
-def test_unmatch_users():
-    wrld.unmatch_users(new_name, new_name2)
-    assert wrld.exists(new_name)
-    assert isinstance(ret, bool)
-    wrld.del_user(new_name)
-    wrld.del_user(new_name2)
-"""
+# def test_unmatch_users():
+#     #match test users
+#     new_name1 = wrld._get_test_name()
+#     ret = wrld.add_user(new_name1, 30, "Female", "Hiking")
+#     new_name2 = wrld._get_test_name()
+#     ret = wrld.add_user(new_name1, 31, "Female", "Hiking")
+#     wrld.match_users(new_name1, new_name2)
+#     #unmatching 
+#     unmatching = wrld.unmatch_users(new_name1, new_name2)
+#     assert isinstance(unmatching, bool)
+#     assert not wrld.match_exists(new_name1, new_name2)
+#     #delete test users
+#     wrld.del_user(new_name1)
+#     wrld.del_user(new_name2)
+
