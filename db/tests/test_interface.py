@@ -93,7 +93,7 @@ def test_match_users():
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
 
-# def test_unmatch_users(): Issue with duplicate users
+# def test_unmatch_users():
 #     #match test users
 #     new_name1 = wrld._get_test_name()
 #     ret = wrld.add_user(new_name1, 30, "Female", "Hiking")
