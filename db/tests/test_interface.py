@@ -93,7 +93,7 @@ def test_match_users():
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
 
-# def test_unmatch_users():
+# def test_unmatch_users(): Issue with duplicate users
 #     #match test users
 #     new_name1 = wrld._get_test_name()
 #     ret = wrld.add_user(new_name1, 30, "Female", "Hiking")
@@ -107,4 +107,17 @@ def test_match_users():
 #     #delete test users
 #     wrld.del_user(new_name1)
 #     wrld.del_user(new_name2)
+
+def test_send_friendReqs():
+    new_name = wrld._get_test_name()
+    ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
+    new_name2 = wrld._get_test_name()
+    ret2 = wrld.add_user(new_name2, 30, "Female", "hiking")
+    send_request = wrld.sendFriendRequest(new_name, new_name2)
+    assert isinstance(send_request, bool)
+    #check if person2 has a friend request from person1
+
+def test_fetch_friendReq():
+    dictlen = len(wrld.fetch_friendReqs())
+    assert dictlen >= 0
 
