@@ -122,3 +122,7 @@ def test_acceptReq(mock_add):
     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
     assert resp.status_code == OK
 
+@patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
+def bad_test_acceptReq(mock_add):
+    resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json=mockReqValues)
+    assert resp.status_code == NOT_ACCEPTABLE
