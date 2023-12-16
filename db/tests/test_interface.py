@@ -93,6 +93,10 @@ def test_match_users():
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
 
+def test_fetch_friendReqs():
+    dictlen = len(wrld.fetch_friendReqs())
+    assert dictlen >= 0
+
 # def test_unmatch_users():
 #     #match test users
 #     new_name1 = wrld._get_test_name()
