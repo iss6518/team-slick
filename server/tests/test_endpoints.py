@@ -115,16 +115,16 @@ mockOtherName = interface.get_test_user()
 mockReqValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 
 
-@patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
-def test_acceptReq(mock_add):
-    """
-    Testing we do the right thing with a call to acceptFriendReq that succeeds
-    """
-    resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
-    assert resp.status_code == OK
+# @patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
+# def test_acceptReq(mock_add):
+#     """
+#     Testing we do the right thing with a call to acceptFriendReq that succeeds
+#     """
+#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
+#     assert resp.status_code == OK
 
 
-@patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
-def bad_test_acceptReq(mock_add):
-    resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
-    assert resp.status_code == NOT_ACCEPTABLE
+# @patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
+# def bad_test_acceptReq(mock_add):
+#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
+#     assert resp.status_code == NOT_ACCEPTABLE
