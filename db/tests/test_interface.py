@@ -106,9 +106,16 @@ def test_unmatch_users():
     wrld.del_user(new_name1)
     wrld.del_user(new_name2)
 
+
 def test_fetch_friendReqs():
     dictlen = len(wrld.fetch_friendReqs())
     assert dictlen >= 0
+
+
+def test_fetch_matches():
+    dictlen = len(wrld.fetch_matches())
+    assert dictlen >= 0
+
 
 def test_acceptFriendReq():
     new_name1 = wrld._get_test_name()
@@ -127,7 +134,7 @@ def test_deleteFriendReq():
     friendreqs = wrld.fetch_friendReqs()
     new_name2 = wrld._get_test_name()
     ret = wrld.add_user(new_name2, 30, "Female", "Hiking")
-    success = deleteFriendReq(new_name, new_name2)
+    success = wrld.deleteFriendReq(new_name, new_name2)
     for user in friendreqs:
         if (user == new_name):
             assert isinstance(friendreqs[new_name], dict)
@@ -139,7 +146,7 @@ def test_sendFriendReq():
     ret = wrld.add_user(new_name, 30, "Female", "Hiking")
     new_name2 = wrld._get_test_name()
     ret = wrld.add_user(new_name2, 30, "Female", "Hiking")
-    success = sendFriendReq(new_name1, new_name2)
+    success = wrld.sendFriendReq(new_name, new_name2)
     assert isinstance (success, bool)
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
