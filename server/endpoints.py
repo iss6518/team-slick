@@ -103,6 +103,11 @@ user_fields = api.model('NewUser', {
 })
 
 
+delete_fields = api.model('delUser', {
+    users.NAME: fields.String
+})
+
+
 match_fields = api.model('matchUser', {
     interface.NAME: fields.String,
     interface.OTHER_USER: fields.String
@@ -172,6 +177,7 @@ class Users(Resource):
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
+    @api.expect(delete_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Found')
     def delete(self):
@@ -298,7 +304,7 @@ class FriendReqs(Resource):
         name = request.json[interface.NAME]
         other_user_name = request.json[interface.OTHER_USER]
         try:
-            interface.sendFriendRequest(name, other_user_name)
+            interface.sendFriendReq(name, other_user_name)
             return {'Message': 'Users sent a friend request successfully'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')

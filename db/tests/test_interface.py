@@ -79,5 +79,6 @@ def test_sendFriendReq():
     ret = users.add_user(new_name2, 30, "Female", "Hiking")
     success = wrld.sendFriendReq(new_name, new_name2)
     assert isinstance (success, bool)
+    wrld.deleteFriendReq(new_name, new_name2)
     users.del_user(new_name)
     users.del_user(new_name2)
