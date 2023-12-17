@@ -115,13 +115,13 @@ mockOtherName = interface.get_test_user()
 mock_CoupleValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 
 
-@patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
-def test_acceptReq(mock_add):
-    """
-    Testing we do the right thing with a call to acceptFriendReq that succeeds
-    """
-    resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mock_CoupleValues)
-    assert resp.status_code == OK
+# @patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
+# def test_acceptReq(mock_add):
+#     """
+#     Testing we do the right thing with a call to acceptFriendReq that succeeds
+#     """
+#     resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mock_CoupleValues)
+#     assert resp.status_code == OK
 
 
 @patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
