@@ -93,7 +93,6 @@ def test_for_users_bad_match(mock_add):
     assert resp.status_code == NOT_ACCEPTABLE
 
    
-
 @patch('db.interface.del_user', return_value = True, autospec=True)
 def test_user_del(mock_del):
     """
@@ -101,6 +100,7 @@ def test_user_del(mock_del):
     """
     resp = TEST_CLIENT.delete(ep.INTERFACE_EP, json = mockValues)
     assert resp.status_code == OK
+
 
 @patch('db.interface.del_user', side_effect = ValueError(), autospec=True)
 def test_user_bad_del(mock_del):
@@ -114,15 +114,17 @@ mock2Name = interface.get_test_user()
 mockOtherName = interface.get_test_user()
 mockReqValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 
-# @patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
-# def test_acceptReq(mock_add):
-#     """
-#     Testing we do the right thing with a call to acceptFriendReq that succeeds
-#     """
-#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
-#     assert resp.status_code == OK
 
-# @patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
-# def bad_test_acceptReq(mock_add):
-#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json=mockReqValues)
-#     assert resp.status_code == NOT_ACCEPTABLE
+@patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
+def test_acceptReq(mock_add):
+    """
+    Testing we do the right thing with a call to acceptFriendReq that succeeds
+    """
+    resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
+    assert resp.status_code == OK
+
+
+@patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
+def bad_test_acceptReq(mock_add):
+    resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
+    assert resp.status_code == NOT_ACCEPTABLE

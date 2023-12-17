@@ -114,7 +114,8 @@ def test_deleteFriendReq():
     friendreqs = wrld.fetch_friendReqs()
     for user in friendreqs:
         assert isinstance(user, str)
-        assert not isinstance(friendreqs[user], dict)
+        assert isinstance(friendreqs[user], dict)
+    wrld.del_user(new_name)
     
 # def test_sendFriendReq():
 
