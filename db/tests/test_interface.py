@@ -98,14 +98,14 @@ def test_fetch_friendReqs():
     assert dictlen >= 0
 
 def test_acceptFriendReq():
-    new_name1 = wrld._get_test_name()
-    ret1 = wrld.add_user(new_name1, 30, "Female", "hiking")
+    new_name = wrld._get_test_name()
+    ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
     new_name2 = wrld._get_test_name()
     ret2 = wrld.add_user(new_name2, 30, "Female", "hiking")
-    testbool = wrld.acceptFriendReq(new_name1, new_name2)
+    testbool = wrld.acceptFriendReq(new_name, new_name2)
     assert not isinstance(testbool, bool)
-    wrld.unmatch_users(new_name1, new_name2)
-    wrld.del_user(new_name1)
+    wrld.unmatch_users(new_name, new_name2)
+    wrld.del_user(new_name)
     wrld.del_user(new_name2)
 
 # def test_unmatch_users():
@@ -122,4 +122,3 @@ def test_acceptFriendReq():
 #     #delete test users
 #     wrld.del_user(new_name1)
 #     wrld.del_user(new_name2)
-
