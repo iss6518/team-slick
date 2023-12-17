@@ -1,7 +1,7 @@
 # interface for matching and sending friend requests for our users
-import random
-
 import db.db_connect as dbc
+import db.users as users
+
 USERS_COLLECT = "users"
 MATCHES_COLLECT = "matches"
 FRIENDREQ_COLLECT = "friendRequests"
@@ -52,7 +52,7 @@ def unmatch_users(name: str, other_user_name: str):
     """
     Unmatches two users by removing their connection.
     """
-    if (not exists(name)) or (not exists(other_user_name)):
+    if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invlaid entry')
 
     # Remove the match for name
@@ -68,7 +68,7 @@ def match_users(name: str, other_user_name: str) -> bool:
     """
     Match two users by adding their connection.
     """
-    if (not exists(name)) or (not exists(other_user_name)):
+    if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invlaid entry')
 
     # Add the match for name
@@ -118,7 +118,7 @@ def deleteFriendReq(name: str, other_user_name: str):
     """
     Retract a sent out Friend Request (or when match successful*)
     """
-    if (not exists(name)) or (not exists(other_user_name)):
+    if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invlaid entry')
 
     # Remove the match for name
@@ -136,7 +136,7 @@ def sendFriendReq(name: str, other_user_name: str) -> bool:
     """
     Send a friend request to another user.
     """
-    if (not exists(name)) or (not exists(other_user_name)):
+    if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invlaid entry')
 
     # Add the match for name
