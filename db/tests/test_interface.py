@@ -12,7 +12,6 @@ def temp_user():
         wrld.del_user(name)
 
 
-
 def test_get_test_name():
     name = wrld._get_test_name()
     assert isinstance(name, str)
@@ -28,7 +27,7 @@ def test_gen_id():
 def test_get_test_user():
     assert isinstance(wrld.get_test_user(), dict)
 
-
+# tests for user_ep db functions
 def test_get_users(temp_user):
     users = wrld.fetch_users()
     assert isinstance(users, dict)
@@ -46,10 +45,6 @@ def test_add_user_dup_name(temp_user):
     dup_name = temp_user
     with pytest.raises(ValueError):
         wrld.add_user(dup_name, 1, "gender", "interest")
-
-
-
-ADD_USER = "New User"
 
 
 def test_add_user():
@@ -71,6 +66,7 @@ def test_del_user_not_there():
     with pytest.raises(ValueError):
         wrld.del_user(name)
 
+
 def test_update_user():
     new_name = wrld._get_test_name()
     ret = wrld.add_user(new_name, 30, "Female", "hiking")
@@ -79,6 +75,8 @@ def test_update_user():
     assert isinstance(ret, bool)
     wrld.del_user(new_name)
 
+
+# test for match_ep db functions
 def test_match_users():
     new_name = wrld._get_test_name()
     ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
@@ -92,6 +90,7 @@ def test_match_users():
     wrld.unmatch_users(new_name, new_name2)
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
+
 
 def test_unmatch_users():
     #match test users
@@ -107,16 +106,17 @@ def test_unmatch_users():
     wrld.del_user(new_name2)
 
 
-def test_fetch_friendReqs():
-    dictlen = len(wrld.fetch_friendReqs())
-    assert dictlen >= 0
-
-
 def test_fetch_matches():
     sample_dict = wrld.fetch_matches()
     dictlen = len(sample_dict)
     assert dictlen >= 0
     assert isinstance(sample_dict, dict)
+
+
+# test for friend request db functions
+def test_fetch_friendReqs():
+    dictlen = len(wrld.fetch_friendReqs())
+    assert dictlen >= 0
 
 
 def test_acceptFriendReq():
@@ -130,6 +130,7 @@ def test_acceptFriendReq():
     wrld.del_user(new_name1)
     wrld.del_user(new_name2)
 
+
 def test_deleteFriendReq():
     new_name = wrld._get_test_name()
     ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
@@ -142,6 +143,7 @@ def test_deleteFriendReq():
             assert isinstance(friendreqs[new_name], dict)
     wrld.del_user(new_name)
     wrld.del_user(new_name2)
+
 
 def test_sendFriendReq():
     new_name = wrld._get_test_name()

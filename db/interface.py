@@ -1,4 +1,4 @@
-# interface for our user data
+# interface for matching and sending friend requests for our users
 import random
 
 import db.db_connect as dbc
@@ -10,30 +10,13 @@ BIG_NUM = 100000000
 ID_LEN = 24
 MOCK_ID = '0' * ID_LEN
 
+ID = '_id'
 NAME = 'user_name'
 AGE = 'age'
 GENDER = 'gender'
 INTERESTS = 'interests'
 OTHER_USER = 'other_user'
-ID = '_id'
 FAVORITE = 'favorite'
-
-users = {}
-user_connections = {}
-
-"""
-users = {
-    'John': {
-        AGE: 22,
-
-    },
-
-    TEST_USER_NAME: {
-        AGE: 25
-    },
-
-}
-"""
 
 
 def _get_test_name():
@@ -57,6 +40,17 @@ def get_test_user():
     return test_user
 
 
+def _gen_id() -> str:
+    """
+    Function to produce ID for users
+    """
+    _id = random.randint(0, BIG_NUM)
+    _id = str(_id)
+    _id = _id.rjust(ID_LEN, '0')
+    return _id
+
+
+# FOR USERS
 def exists(name: str) -> bool:
     dbc.connect_db()
     return dbc.fetch_one(USERS_COLLECT, {NAME: name})
@@ -81,16 +75,6 @@ def fetch_users() -> dict:
     return dbc.fetch_all_as_dict(NAME, USERS_COLLECT)
 
 
-def _gen_id() -> str:
-    """
-    Function to produce ID for users
-    """
-    _id = random.randint(0, BIG_NUM)
-    _id = str(_id)
-    _id = _id.rjust(ID_LEN, '0')
-    return _id
-
-
 def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     """
     Function to add users. For interests, users only enter 1 interest
@@ -100,9 +84,6 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     if not name:
         raise ValueError("User can't be blank")
 
-    # code for adding a user to mongodb as appose to local memory
-    # TODO: this code brings up a lot of errors in test_interface.py so
-    # commenting out now until class next week
     user = {}
     user[NAME] = name
     user[AGE] = age
@@ -113,9 +94,6 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     _id = dbc.insert_one(USERS_COLLECT, user)
     return _id is not None
 
-    # users[name] = {AGE: age, GENDER: gender, INTERESTS: interest}
-    # return _gen_id()
-
 
 def update_user(name: str, newValues: dict) -> bool:
     """
@@ -123,11 +101,6 @@ def update_user(name: str, newValues: dict) -> bool:
     """
     if not name:
         raise ValueError("User can't be blank")
-
-    # currUserDict = dbc.fetch_one(USERS_COLLECT, {NAME: name})
-    # filter = {age: 12, gender: male}
-    """for key in filter:
-        currUserDict[key] = filter[key]"""
 
     filter = {NAME: name}
     setValues = {"$set": newValues}
@@ -137,6 +110,7 @@ def update_user(name: str, newValues: dict) -> bool:
     return _id is not None
 
 
+# FOR MATCHING
 def match_exists(matchID) -> bool:
     dbc.connect_db()
     return dbc.fetch_one(MATCHES_COLLECT, {ID: matchID})
@@ -168,7 +142,6 @@ def update_match(name: str, otherName: str) -> bool:
     return _id is not None
 
 
-# function to unmatch users
 def unmatch_users(name: str, other_user_name: str):
     """
     Unmatches two users by removing their connection.
@@ -185,7 +158,6 @@ def unmatch_users(name: str, other_user_name: str):
         raise ValueError('Users are not unmatched')
 
 
-# function to match users
 def match_users(name: str, other_user_name: str) -> bool:
     """
     Match two users by adding their connection.
@@ -214,7 +186,7 @@ def fetch_friendReqs() -> dict:
 
 def acceptFriendReq(name: str, otherName: str) -> bool:
     """
-    Function to accept or decline friend request
+    Function to accept friend request
     """
     if not name:  # TODO should use match_exits func ***
         raise ValueError("Match can't be blank")
@@ -236,7 +208,6 @@ def acceptFriendReq(name: str, otherName: str) -> bool:
     return returnVal
 
 
-# function to unmatch users
 def deleteFriendReq(name: str, other_user_name: str):
     """
     Retract a sent out Friend Request (or when match successful*)
@@ -255,7 +226,6 @@ def deleteFriendReq(name: str, other_user_name: str):
         raise ValueError('Users are not unmatched')
 
 
-# function to match users
 def sendFriendReq(name: str, other_user_name: str) -> bool:
     """
     Send a friend request to another user.

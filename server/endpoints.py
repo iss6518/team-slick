@@ -7,7 +7,7 @@ import werkzeug.exceptions as wz
 
 from flask import Flask, request
 from flask_restx import Resource, Api, fields
-import db.users as users
+# import db.users as users
 import db.interface as interface
 
 # creating flash application
@@ -96,32 +96,22 @@ class MainMenu(Resource):
 
 
 # need to add an (maybe external) endpoint for login (ex: signin with google)
-
-
+"""
 # endpoint for getting list of friend requests
 @api.route(f'{USERS_EP}')
 class friendRequests(Resource):
-    """
-    This class supports fetching a list of friend requests
-    """
+    # This class supports fetching a list of friend requests
     def get(self):
-        """
-        This method returns all friend requests
-        """
+        # This method returns all friend requests
         return {DATA: users.get_friend_requests()}
-
-
 # creating an endpoint for /users
 @api.route(f'{USERS_EP}')
 class Users(Resource):
-    """
-    This class supports fetching a list of all pets.
-    """
+    # This class supports fetching a list of all pets.
     def get(self):
-        """
-        This method returns all users.
-        """
+        # This method returns all users.
         return {DATA: users.fetch_users()}
+"""
 
 
 user_fields = api.model('NewUser', {
@@ -132,8 +122,14 @@ user_fields = api.model('NewUser', {
 })
 
 
+match_fields = api.model('matchUser', {
+    interface.NAME: fields.String,
+    interface.OTHER_USER: fields.String
+})
+
+
 @api.route(f'{INTERFACE_EP}')
-class Interface(Resource):
+class Interface(Resource):  # TODO rename to User
     """
     This class supports various operations on our interface, such as
     listing users, and adding a user.
@@ -207,12 +203,6 @@ class Interface(Resource):
             return {name: 'Deleted'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
-
-
-match_fields = api.model('matchUser', {
-    interface.NAME: fields.String,
-    interface.OTHER_USER: fields.String
-})
 
 
 @api.route(f'{MATCHES_EP}')
