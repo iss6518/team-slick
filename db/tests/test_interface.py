@@ -108,6 +108,16 @@ def test_acceptFriendReq():
     wrld.del_user(new_name1)
     wrld.del_user(new_name2)
 
+def test_deleteFriendReq():
+    new_name = wrld._get_test_name()
+    ret1 = wrld.add_user(new_name, 30, "Female", "hiking")
+    friendreqs = wrld.fetch_friendReqs()
+    for user in friendreqs:
+        assert isinstance(user, str)
+        assert not isinstance(friendreqs[user], dict)
+    
+# def test_sendFriendReq():
+
 # def test_unmatch_users():
 #     #match test users
 #     new_name1 = wrld._get_test_name()

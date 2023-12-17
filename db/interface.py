@@ -256,7 +256,7 @@ def deleteFriendReq(name: str, other_user_name: str):
 
 
 # function to match users
-def sendFriendRequest(name: str, other_user_name: str) -> bool:
+def sendFriendReq(name: str, other_user_name: str) -> bool:
     """
     Send a friend request to another user.
     """
