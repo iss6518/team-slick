@@ -112,7 +112,7 @@ def test_user_bad_del(mock_del):
 
 mock2Name = interface.get_test_user()
 mockOtherName = interface.get_test_user()
-mockReqValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
+mock_CoupleValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 
 
 # @patch('db.interface.acceptFriendReq',return_value = True, autospec=True)
@@ -120,11 +120,30 @@ mockReqValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherName}
 #     """
 #     Testing we do the right thing with a call to acceptFriendReq that succeeds
 #     """
-#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
+#     resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mock_CoupleValues)
 #     assert resp.status_code == OK
 
 
-# @patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
-# def bad_test_acceptReq(mock_add):
-#     resp = TEST_CLIENT.post(ep.FRIENDREQ_EP, json = mockReqValues)
-#     assert resp.status_code == NOT_ACCEPTABLE
+@patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
+def bad_test_acceptReq(mock_add):
+    resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mock_CoupleValues)
+    assert resp.status_code == NOT_ACCEPTABLE
+
+
+@patch('db.interface.update_match',return_value = True, autospec=True)
+def test_update_match(mock):
+    resp = TEST_CLIENT.put(ep.MATCHES_EP, json = mock_CoupleValues)
+    assert resp.status_code == OK
+
+
+@patch('db.interface.update_match', side_effect=ValueError(), autospec=True)
+def bad_test_update_match(mock):
+    resp = TEST_CLIENT.put(ep.MATCHES_EP, json = mock_CoupleValues)
+    assert resp.status_code == NOT_ACCEPTABLE
+
+
+def test_return_users():
+    resp = TEST_CLIENT.get(ep.MATCHES_EP)
+    resp_json = resp.get_json()
+    assert isinstance(resp_json, dict)
+    assert ep.DATA in resp_json

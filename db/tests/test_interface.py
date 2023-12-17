@@ -113,8 +113,10 @@ def test_fetch_friendReqs():
 
 
 def test_fetch_matches():
-    dictlen = len(wrld.fetch_matches())
+    sample_dict = wrld.fetch_matches()
+    dictlen = len(sample_dict)
     assert dictlen >= 0
+    assert isinstance(sample_dict, dict)
 
 
 def test_acceptFriendReq():
