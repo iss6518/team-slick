@@ -7,7 +7,7 @@ import werkzeug.exceptions as wz
 
 from flask import Flask, request
 from flask_restx import Resource, Api, fields
-# import db.users as users
+import db.users as users
 import db.interface as interface
 
 # creating flash application
@@ -17,22 +17,22 @@ MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
 
 # forming some endpoint URLs
-DELETE = 'delete'
-USERS_EP = '/users'
 HELLO_EP = '/hello'
-HELLO_RESP = 'hello'
-UNMATCH_USERS = 'unmatch'
-
-INTERFACE_EP = '/interfaces'
 INTERFACE_MENU_EP = '/interface_menu'
+
+USERS_EP = '/users'
+MATCHES_EP = '/matches'
+FRIENDREQ_EP = '/friendRequest'
+FRIENDREQACC_EP = '/friendRequestAccept'
+
 INTERFACE_MENU_NM = 'Interface Menu'
 USER_ID = 'User ID'
-MATCHES_EP = '/matches'
 MATCH_ID = 'Match ID'
-
-FRIENDREQ_EP = '/friendReq'
 FRIENDREQ_ID = 'FriendReq ID'
 
+HELLO_RESP = 'hello'
+UNMATCH_USERS = 'unmatch'
+DELETE = 'delete'
 
 TYPE = 'Type'
 DATA = 'Data'
@@ -95,30 +95,11 @@ class MainMenu(Resource):
                 }}
 
 
-# need to add an (maybe external) endpoint for login (ex: signin with google)
-"""
-# endpoint for getting list of friend requests
-@api.route(f'{USERS_EP}')
-class friendRequests(Resource):
-    # This class supports fetching a list of friend requests
-    def get(self):
-        # This method returns all friend requests
-        return {DATA: users.get_friend_requests()}
-# creating an endpoint for /users
-@api.route(f'{USERS_EP}')
-class Users(Resource):
-    # This class supports fetching a list of all pets.
-    def get(self):
-        # This method returns all users.
-        return {DATA: users.fetch_users()}
-"""
-
-
 user_fields = api.model('NewUser', {
-    interface.NAME: fields.String,
-    interface.AGE: fields.Integer,
-    interface.GENDER: fields.String,
-    interface.INTERESTS: fields.String
+    users.NAME: fields.String,
+    users.AGE: fields.Integer,
+    users.GENDER: fields.String,
+    users.INTERESTS: fields.String
 })
 
 
@@ -128,11 +109,11 @@ match_fields = api.model('matchUser', {
 })
 
 
-@api.route(f'{INTERFACE_EP}')
-class Interface(Resource):  # TODO rename to User
+@api.route(f'{USERS_EP}')
+class Users(Resource):
     """
-    This class supports various operations on our interface, such as
-    listing users, and adding a user.
+    This class supports various operations on our users, such as
+    listing, adding, updating, and deleting users.
     """
     def get(self):
         """
@@ -141,7 +122,7 @@ class Interface(Resource):  # TODO rename to User
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            DATA: interface.fetch_users(),
+            DATA: users.fetch_users(),
             MENU: INTERFACE_MENU_EP,
             RETURN: INTERFACE_MENU_EP,
         }
@@ -153,12 +134,12 @@ class Interface(Resource):  # TODO rename to User
         """
         Add a user.
         """
-        name = request.json[interface.NAME]
-        age = request.json[interface.AGE]
-        gender = request.json[interface.GENDER]
-        interests = request.json[interface.INTERESTS]
+        name = request.json[users.NAME]
+        age = request.json[users.AGE]
+        gender = request.json[users.GENDER]
+        interests = request.json[users.INTERESTS]
         try:
-            new_id = interface.add_user(name, age, gender, interests)
+            new_id = users.add_user(name, age, gender, interests)
             if new_id is False:  # add_user return true if _id is None
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {USER_ID: new_id}
@@ -172,19 +153,19 @@ class Interface(Resource):  # TODO rename to User
         """
         Update a user.
         """
-        name = request.json[interface.NAME]
-        age = request.json[interface.AGE]
-        gender = request.json[interface.GENDER]
-        interests = request.json[interface.INTERESTS]
+        name = request.json[users.NAME]
+        age = request.json[users.AGE]
+        gender = request.json[users.GENDER]
+        interests = request.json[users.INTERESTS]
 
         newValues = {
-                interface.AGE: age,
-                interface.GENDER: gender,
-                interface.INTERESTS: interests
+                users.AGE: age,
+                users.GENDER: gender,
+                users.INTERESTS: interests
                 }
 
         try:
-            updated_id = interface.update_user(name, newValues)
+            updated_id = users.update_user(name, newValues)
             if updated_id is False:
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {USER_ID: updated_id}
@@ -197,9 +178,9 @@ class Interface(Resource):  # TODO rename to User
         """
         deletes user by name
         """
-        name = request.json[interface.NAME]
+        name = request.json[users.NAME]
         try:
-            interface.del_user(name)
+            users.del_user(name)
             return {name: 'Deleted'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
@@ -208,7 +189,7 @@ class Interface(Resource):  # TODO rename to User
 @api.route(f'{MATCHES_EP}')
 class Matches(Resource):
     """
-    This class allows a user to unmatch with another user.
+    This class allows a user to match or unmatch with another user.
     """
 
     def get(self):
@@ -272,7 +253,7 @@ class Matches(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
-# THIS IS FOR FRIEND REQUESTS:
+# THIS IS FOR FRIEND REQUESTS
 @api.route(f'{FRIENDREQ_EP}')
 class FriendReqs(Resource):
     """
@@ -342,7 +323,7 @@ class FriendReqs(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
-@api.route(f'{FRIENDREQ_EP}')
+@api.route(f'{FRIENDREQACC_EP}')
 class FriendReqsAccept(Resource):
     @api.expect(match_fields)
     @api.response(HTTPStatus.OK, 'Success')

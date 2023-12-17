@@ -1,79 +1,106 @@
-"""
-This file will manage interactions with our data store.
-At first, it will just contain stubs that return fake data.
-Gradually, we will fill in actual calls to our datastore.
-"""
+# interface for matching and sending friend requests for our users
+import random
 
-INTERESTS = 'interests'
-MIN_USER_NAME_LEN = 2
-USER_NAME = "Will"
+import db.db_connect as dbc
+USERS_COLLECT = "users"
+
+BIG_NUM = 100000000
 ID_LEN = 24
-BIG_NUM = 100_000_000_000_000_000_000
 MOCK_ID = '0' * ID_LEN
-TESTNAME = "John"
 
-all_users = {
-    "John": {INTERESTS: ["sports", "studying"]},
-    "Will": {INTERESTS: ["music", "dance"]},
-    "James": {INTERESTS: ["coffee", "cooking"]},
-    "Mike": {INTERESTS: ["sports", "swe"]}
-}
-
-my_friends = {
-    "John": {INTERESTS: ["sports", "studying"]},
-}
-
-my_friend_requests = {
-    "James": {INTERESTS: ["coffee", "cooking"]},
-    "Mike": {INTERESTS: ["sports", "swe"]}
-}
+ID = '_id'
+NAME = 'user_name'
+AGE = 'age'
+GENDER = 'gender'
+INTERESTS = 'interests'
 
 
-def fetch_users() -> dict:
+def _get_test_name():
     """
-    A function to return all users in the data store.
+    Function to get the random test user name
     """
-    return all_users
+    name = 'test'
+    rand_part = random.randint(0, BIG_NUM)
+    return name + str(rand_part)
 
 
-def get_friend_requests() -> dict:
+def get_test_user():
     """
-    A function to return all of a user's friend requests
+    Function to return us a sample test user
     """
-    return my_friend_requests
+    test_user = {}
+    test_user[NAME] = _get_test_name()
+    test_user[AGE] = 18
+    test_user[GENDER] = "male"
+    test_user[INTERESTS] = "hiking"
+    return test_user
 
 
-def add_friend(user_name: str) -> dict:
-    if user_name in my_friends:
-        raise ValueError(f'Duplicate friend add: {user_name=}')
-    my_friends[user_name] = all_users[user_name]
-    return my_friends
-
-
-def get_friends() -> dict:
+def _gen_id() -> str:
     """
-    A function to return all of a users friends
+    Function to produce ID for users
     """
-    return my_friends
+    _id = random.randint(0, BIG_NUM)
+    _id = str(_id)
+    _id = _id.rjust(ID_LEN, '0')
+    return _id
+
+
+# FOR USERS
+def exists(name: str) -> bool:
+    dbc.connect_db()
+    return dbc.fetch_one(USERS_COLLECT, {NAME: name})
+    # return name in fetch_users()
 
 
 def del_user(name: str):
     """
     A function to remove a user from list of users
     """
-    if name in all_users:
-        del all_users[name]
+    if exists(name):
+        return dbc.del_one(USERS_COLLECT, {NAME: name})
     else:
         raise ValueError(f'Delete failure: {name} not in database.')
 
 
-def exists(name: str) -> bool:
+def fetch_users() -> dict:
     """
-    Function to check if user exists, returns bool
+    A function to return all users in the data store.
     """
-    return name in fetch_users()
+    dbc.connect_db()
+    return dbc.fetch_all_as_dict(NAME, USERS_COLLECT)
 
-# def _get_test_name():
-#     name = 'test'
-#     rand_part = random.randint(0, BIG_NUM)
-#     return name + str(rand_part)
+
+def add_user(name: str, age: int, gender: str, interest: str) -> bool:
+    """
+    Function to add users. For interests, users only enter 1 interest
+    """
+    if exists(name):
+        raise ValueError(f'Duplicate user name: {name= }')
+    if not name:
+        raise ValueError("User can't be blank")
+
+    user = {}
+    user[NAME] = name
+    user[AGE] = age
+    user[GENDER] = gender
+    user[INTERESTS] = interest
+
+    dbc.connect_db()
+    _id = dbc.insert_one(USERS_COLLECT, user)
+    return _id is not None
+
+
+def update_user(name: str, newValues: dict) -> bool:
+    """
+    Function to update users (depending on field we want to change)
+    """
+    if not name:
+        raise ValueError("User can't be blank")
+
+    filter = {NAME: name}
+    setValues = {"$set": newValues}
+
+    dbc.connect_db()
+    _id = dbc.update_one(USERS_COLLECT, filter, setValues)
+    return _id is not None
