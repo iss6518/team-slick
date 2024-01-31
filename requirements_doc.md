@@ -2,4 +2,4 @@ The txt requirement files serve as a dependency management tool within Python pr
 
 pip install -r requirements.txt 
 
-It's good to keep this in mind as we expand our project. Keeping this updated can ensure others also avoid build errors.
+It's good to keep this in mind as we expand our project. Keeping this updated can ensure others also avoid build errors!
