@@ -36,8 +36,7 @@ def connect_db():
             print("Connecting to Mongo in the cloud.")
             client = pm.MongoClient(f'mongodb+srv://iccha02:{password}'
                                     + '@atlascluster.xd0fj6a.mongodb.net/'
-                                    + '?retryWrites=true&w=majority',
-                                    tls=False)
+                                    + '?retryWrites=true&w=majority')
             # atlascluster.xd0fj6a.mongodb.net
             # PA recommends these settings:
             # + 'connectTimeoutMS=30000&'
