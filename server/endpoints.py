@@ -7,12 +7,16 @@ import werkzeug.exceptions as wz
 
 from flask import Flask, request
 from flask_restx import Resource, Api, fields
+from flask_cors import CORS
+
 import db.users as users
 import db.interface as interface
 
 # creating flash application
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
+
 MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
 
