@@ -20,6 +20,8 @@ second half of last semester.
 -We left off the semester upgrading our PythonAnywhere accounts to 
 support running our repo on their console. 
 
+-Established a continuous integration/continuous deployment (CI/CD) pipeline to streamline development workflows and ensure smooth deployments of new features.
+
 
 --------------------------------
 
@@ -35,3 +37,4 @@ our PythonAnwhere, so we're hoping to get that resolved this semester.
 
 -Getting good with React and developing exprience with connecting the backend to the frontend segment of this course. All of us on the team are relatively new to React, so it'll be a learning experience for us all. Since we're all new to React, we plan on doing a bit more of peer programming this semester. Although the course is remote, we have the opportunity to meet in person this semester, so we do plan on taking advantage of this. 
 
+-Explore the integration of real-time communication features, such as instant messaging or notifications, to facilitate immediate interaction between users and enhance engagement on the platform.
