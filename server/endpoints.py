@@ -136,7 +136,7 @@ class Users(Resource):
         name = args.get("name")
         data = {}
         if name:
-            data = users.searc_user(name)
+            data = users.search_user(name)
             # this is just to test
             # data = gqry.search_by_term(name)
             # TO DO:
