@@ -119,19 +119,36 @@ match_fields = api.model('matchUser', {
 
 
 @api.route(f'{USERS_EP}')
+#@api.route("test") this is to test if swagger is working
 class Users(Resource):
     """
     This class supports various operations on our users, such as
     listing, adding, updating, and deleting users.
     """
+    @api.doc(params={"name": "name"})
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         This method returns all users.
         """
+        args = request.json
+        name = args.get("name")
+        data = {}
+        if name:
+            data = users.searc_user(name)
+            # this is just to test
+            # data = gqry.search_by_term(name)
+            # TO DO:
+            # write a func for searching name ***
+        else:
+            data = users.fetch_users()
+
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            DATA: users.fetch_users(),
+            # DATA: users.fetch_users(),
+            DATA: data,
             MENU: INTERFACE_MENU_EP,
             RETURN: INTERFACE_MENU_EP,
         }

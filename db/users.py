@@ -70,6 +70,16 @@ def fetch_users() -> dict:
     dbc.connect_db()
     return dbc.fetch_all_as_dict(NAME, USERS_COLLECT)
 
+def search_user(name: str) -> dict:
+    """
+    A function to return a specific user in the data store.
+    """
+    if exists(name):
+        return dbc.fetch_one(USERS_COLLECT, {NAME: name})
+    else:
+        raise ValueError(f'Search failure: {name} not in database.')
+
+
 
 def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     """
