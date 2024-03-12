@@ -14,8 +14,8 @@ import db.interface as interface
 
 # creating flash application
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 api = Api(app)
-CORS(app)
 
 MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
