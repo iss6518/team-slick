@@ -119,7 +119,6 @@ match_fields = api.model('matchUser', {
 
 
 @api.route(f'{USERS_EP}')
-#@api.route("test") this is to test if swagger is working
 class Users(Resource):
     """
     This class supports various operations on our users, such as
