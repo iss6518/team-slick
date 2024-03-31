@@ -124,15 +124,15 @@ class Users(Resource):
     This class supports various operations on our users, such as
     listing, adding, updating, and deleting users.
     """
-    @api.doc(params={"name": "name"})
-    @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    #  @api.doc(params={"name": "name"})
+    # @api.response(HTTPStatus.OK, 'Success')
+    # @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         This method returns all users.
-        """
-        args = request.json
-        name = args.get("name")
+        name = request.json[users.NAME]
+        # args = request.json
+        # name = args.get("name")
         data = {}
         if name:
             data = users.search_user(name)
@@ -142,12 +142,12 @@ class Users(Resource):
             # write a func for searching name ***
         else:
             data = users.fetch_users()
-
+        """
         return {
             TYPE: DATA,
             TITLE: 'Current Users',
-            # DATA: users.fetch_users(),
-            DATA: data,
+            DATA: users.fetch_users(),
+            # DATA: data,
             MENU: INTERFACE_MENU_EP,
             RETURN: INTERFACE_MENU_EP,
         }
