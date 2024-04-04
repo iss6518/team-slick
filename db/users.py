@@ -82,11 +82,13 @@ def search_user(name: str) -> dict:
 
 """
 Search a user (assn for 4/4/24 lecture)
+QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
 """
 FIND_USER_FORM_FLDS = [
     {
         FLD_NM: 'Name',
         ff.QSTN: 'Enter name to find specific user',
+        ff.PARAM_TYPE: ff.QUERY_STR,
         ff.INSTRUCTIONS: True,
     }
 ]
@@ -118,6 +120,7 @@ EMAIL = 'email'
 PASSWORD = 'password'
 """
 Create an account form aka Member Reg (assn for 4/4/24 lec)
+QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
 """
 CREATE_ACCOUNT_FORM_FLDS = [
     {
