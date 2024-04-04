@@ -110,6 +110,46 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     _id = dbc.insert_one(USERS_COLLECT, user)
     return _id is not None
 
+"""
+Create an account form aka Member Reg (assn for 4/4/24 lec)
+"""
+CREATE_ACCOUNT_FORM_FLDS = [
+    {
+        FLD_NM: 'Username',
+        ff.QSTN: 'Choose an username to create an account',
+        ff.INSTRUCTIONS: True,
+    },
+    {
+        FLD_NM: "Age",
+        ff.QSTN: 'Pick an age to create an account:',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.OPT: True,
+    },
+    {
+        FLD_NM: "Gender",
+        ff.QSTN: 'Pick a gender to create an account:',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.OPT: True,
+    },
+    {
+        FLD_NM: "Your interest",
+        ff.QSTN: 'Add an interest to create an account',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.OPT: True,
+    },
+    {
+        FLD_NM: "Email",
+        ff.QSTN: 'Add your email to create an account',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.OPT: True,
+    },
+    {
+        FLD_NM: "Password",
+        ff.QSTN: 'Choose a password to secure your account',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.OPT: True,
+    },
+]
 
 def update_user(name: str, newValues: dict) -> bool:
     """
