@@ -86,8 +86,8 @@ QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
 """
 FIND_USER_FORM_FLDS = [
     {
-        FLD_NM: 'Name',
-        ff.QSTN: 'Enter name to find specific user',
+        FLD_NM: USERNAME,
+        ff.QSTN: 'Enter username (not just name) to find specific user',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.INSTRUCTIONS: True,
     }
