@@ -14,6 +14,8 @@ AGE = 'age'
 GENDER = 'gender'
 INTERESTS = 'interests'
 
+FLD_NM = 'fld_nm'
+
 
 def _get_test_name():
     """
