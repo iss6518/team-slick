@@ -110,41 +110,53 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     _id = dbc.insert_one(USERS_COLLECT, user)
     return _id is not None
 
+USERNAME = 'username'
+AGE= 'age'
+GENDER = 'gender'
+INTEREST = 'interest'
+EMAIL = 'email'
+PASSWORD = 'password'
 """
 Create an account form aka Member Reg (assn for 4/4/24 lec)
 """
 CREATE_ACCOUNT_FORM_FLDS = [
     {
-        FLD_NM: 'Username',
-        ff.QSTN: 'Choose an username to create an account',
+        FLD_NM: 'Instructions',
+        ff.QSTN: 'Create an account by filling in details below',
         ff.INSTRUCTIONS: True,
     },
     {
-        FLD_NM: "Age",
+        FLD_NM: USERNAME,
+        ff.QSTN: 'Choose an username to create an account',
+        ff.PARAM_TYPE: ff.QUERY_STR,
+        ff.INSTRUCTIONS: True,
+    },
+    {
+        FLD_NM: AGE,
         ff.QSTN: 'Pick an age to create an account:',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
     },
     {
-        FLD_NM: "Gender",
+        FLD_NM: GENDER,
         ff.QSTN: 'Pick a gender to create an account:',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
     },
     {
-        FLD_NM: "Your interest",
+        FLD_NM: INTEREST,
         ff.QSTN: 'Add an interest to create an account',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
     },
     {
-        FLD_NM: "Email",
+        FLD_NM: EMAIL,
         ff.QSTN: 'Add your email to create an account',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
     },
     {
-        FLD_NM: "Password",
+        FLD_NM: PASSWORD,
         ff.QSTN: 'Choose a password to secure your account',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
