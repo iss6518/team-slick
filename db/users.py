@@ -80,6 +80,16 @@ def search_user(name: str) -> dict:
     else:
         raise ValueError(f'Search failure: {name} not in database.')
 
+"""
+Search a user (assn for 4/4/24 lecture)
+"""
+FIND_USER_FORM_FLDS = [
+    {
+        FLD_NM: 'Name',
+        ff.QSTN: 'Enter name to find specific user',
+        ff.INSTRUCTIONS: True,
+    }
+]
 
 def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     """
