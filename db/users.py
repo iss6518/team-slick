@@ -82,6 +82,13 @@ def search_user(name: str) -> dict:
     else:
         raise ValueError(f'Search failure: {name} not in database.')
 
+USERNAME = 'username'
+AGE= 'age'
+GENDER = 'gender'
+INTEREST = 'interest'
+EMAIL = 'email'
+PASSWORD = 'password'
+
 """
 Search a user (assn for 4/4/24 lecture)
 QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
@@ -114,12 +121,7 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     _id = dbc.insert_one(USERS_COLLECT, user)
     return _id is not None
 
-USERNAME = 'username'
-AGE= 'age'
-GENDER = 'gender'
-INTEREST = 'interest'
-EMAIL = 'email'
-PASSWORD = 'password'
+
 """
 Create an account form aka Member Reg (assn for 4/4/24 lec)
 QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
