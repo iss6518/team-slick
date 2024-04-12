@@ -85,8 +85,9 @@ def search_user(name: str) -> dict:
     else:
         raise ValueError(f'Search failure: {name} not in database.')
 
+
 USERNAME = 'username'
-AGE= 'age'
+AGE = 'age'
 GENDER = 'gender'
 INTEREST = 'interest'
 EMAIL = 'email'
@@ -104,6 +105,7 @@ FIND_USER_FORM_FLDS = [
         ff.INSTRUCTIONS: True,
     }
 ]
+
 
 def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     """
@@ -172,6 +174,7 @@ CREATE_ACCOUNT_FORM_FLDS = [
         ff.OPT: True,
     },
 ]
+
 
 def update_user(name: str, newValues: dict) -> bool:
     """
