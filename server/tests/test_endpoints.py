@@ -4,13 +4,13 @@ from unittest.mock import patch
 
 import pytest
 
+import forms.form_filler as ff
+
 import server.endpoints as ep
 
 import db.users as users
 
 import db.interface as interface
-
-import forms.form_filler as ff
 
 TEST_CLIENT = ep.app.test_client()
 
