@@ -10,6 +10,8 @@ import db.users as users
 
 import db.interface as interface
 
+import forms.form_filler as ff
+
 TEST_CLIENT = ep.app.test_client()
 
 mockName = "Dareck"
