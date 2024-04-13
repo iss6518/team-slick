@@ -14,7 +14,10 @@ import db.interface as interface
 
 # creating flash application
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={
+    r"/users/*": {"origins": "http://localhost:3000"},
+    r"/friendRequest/*": {"origins": "http://localhost:3000"}
+})
 api = Api(app)
 
 MAIN_MENU = 'MainMenu'
