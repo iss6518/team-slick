@@ -155,27 +155,28 @@ We'll be using a FR_SENT list for the sending user, and corresponding FR_RECIEVE
 
 def newSendFriendReq(name: str, other_user_name: str) -> bool:
     """
-    Send a friend request to another user.
+    NEW TESTING OUT.. sending a friend request to another user.
+    """
+
+    """ TO DO: 
+    Need to search for the user if it already exists in friendRequests
+    We may have to insert if first friendRequest user sends. ********
     """
     if (not users.exists(name)) or (not users.exists(other_user_name)):
-        raise ValueError('Invlaid entry')
-
-    # Add the match for name
-
-    # name is who SENT request
-    # other_user is who RECIEVED
+        raise ValueError('Invalid entry')
 
     dbc.connect_db()
 
-    # NOT using OTHER_USER bc of sep lists for each user now
+    # Add other_user_name to friend_request_sent list of name
+    dbc.FRIENDREQ_COLLECT.update_one(
+        {NAME: name},
+        {"$push": {"friend_request_sent": {NAME: other_user_name}}}
+    )
 
-    CURRUSER = dbc.FRIENDREQ_COLLECT.find({NAME: name}) # we're finding name
-    CURRUSER.FRIENDREQ_SENT.append({NAME: other_user_name}) # adding other user who they requested
-    _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQSENT)
-    # adding it as a SENT request for NAME user
+    # Add name to friend_request_received list of other_user_name
+    dbc.FRIENDREQ_COLLECT.update_one(
+        {NAME: other_user_name},
+        {"$push": {"friend_request_received": {NAME: name}}}
+    )
 
-    CURRUSER = dbc.FRIENDREQ_COLLECT.find({NAME: other_user_name}) # finding other user
-    CURRUSER.FRIENDREQ_RECIEVED.append({NAME: name}) # adding other user who equested them
-    _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQRECIEVED)
-    # adding it as a RECIEVED request for OTHER_NAME user
-    return _id1 is not None and _id2 is not None
+    return True
