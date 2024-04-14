@@ -5,6 +5,9 @@ import db.users as users
 USERS_COLLECT = "users"
 MATCHES_COLLECT = "matches"
 FRIENDREQ_COLLECT = "friendRequests"
+# defined as lists
+FRIENDREQ_SENT = []
+FRIENDREQ_RECIEVED = []
 
 BIG_NUM = 100000000
 ID_LEN = 24
@@ -131,10 +134,9 @@ def deleteFriendReq(name: str, other_user_name: str):
     except ValueError:
         raise ValueError('Users are not unmatched')
 
-
 def sendFriendReq(name: str, other_user_name: str) -> bool:
     """
-    Send a friend request to another user.
+    Original way to send a friend request to another user. Will be replaced with func below.
     """
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invlaid entry')
@@ -146,4 +148,34 @@ def sendFriendReq(name: str, other_user_name: str) -> bool:
 
     _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQA)
     _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQB)
+    return _id1 is not None and _id2 is not None       
+
+""" This will be the new way we store friend requests for both the sending/recieving user.
+We'll be using a FR_SENT list for the sending user, and corresponding FR_RECIEVED list for the recieving user."""
+
+def newSendFriendReq(name: str, other_user_name: str) -> bool:
+    """
+    Send a friend request to another user.
+    """
+    if (not users.exists(name)) or (not users.exists(other_user_name)):
+        raise ValueError('Invlaid entry')
+
+    # Add the match for name
+
+    # name is who SENT request
+    # other_user is who RECIEVED
+
+    dbc.connect_db()
+
+    # NOT using OTHER_USER bc of sep lists for each user now
+
+    CURRUSER = dbc.FRIENDREQ_COLLECT.find({NAME: name}) # we're finding name
+    CURRUSER.FRIENDREQ_SENT.append({NAME: other_user_name}) # adding other user who they requested
+    _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQSENT)
+    # adding it as a SENT request for NAME user
+
+    CURRUSER = dbc.FRIENDREQ_COLLECT.find({NAME: other_user_name}) # finding other user
+    CURRUSER.FRIENDREQ_RECIEVED.append({NAME: name}) # adding other user who equested them
+    _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQRECIEVED)
+    # adding it as a RECIEVED request for OTHER_NAME user
     return _id1 is not None and _id2 is not None

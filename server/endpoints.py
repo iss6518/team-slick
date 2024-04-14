@@ -325,8 +325,8 @@ class FriendReqs(Resource):
         """
         Allows a user to send a friend request to another user.
         """
-        name = request.json[interface.NAME]
-        other_user_name = request.json[interface.OTHER_USER]
+        name = request.json[interface.NAME] # name sends request
+        other_user_name = request.json[interface.OTHER_USER] # other_user recieves
         try:
             interface.sendFriendReq(name, other_user_name)
             return {'Message': 'Users sent a friend request successfully'}
