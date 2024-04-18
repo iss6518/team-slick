@@ -329,7 +329,7 @@ class FriendReqs(Resource):
         other_user_name = request.json[interface.OTHER_USER]
         # other_user recieves ^
         try:
-            interface.sendFriendReq(name, other_user_name)
+            interface.newSendFriendReq(name, other_user_name)
             return {'Message': 'Users sent a friend request successfully'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
