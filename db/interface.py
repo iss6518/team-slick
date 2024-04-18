@@ -173,15 +173,13 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
     dbc.connect_db()
 
     # Add other_user_name to friend_request_sent list of name
-    dbc.FRIENDREQ_COLLECT.update_one(
-        {NAME: name},
-        {"$push": {"friend_request_sent": {NAME: other_user_name}}}
-    )
+    dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
+                   {"$push": {"friend_request_sent": {NAME: other_user_name}}}
+                   )
 
     # Add name to friend_request_received list of other_user_name
-    dbc.FRIENDREQ_COLLECT.update_one(
-        {NAME: other_user_name},
-        {"$push": {"friend_request_received": {NAME: name}}}
-    )
+    dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
+                   {"$push": {"friend_request_received": {NAME: name}}}
+                   )
 
     return True

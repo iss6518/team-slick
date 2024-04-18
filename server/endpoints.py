@@ -330,7 +330,7 @@ class FriendReqs(Resource):
         # other_user recieves ^
         try:
             interface.newSendFriendReq(name, other_user_name)
-            return {'Message': 'Users sent a friend request successfully'}
+            return {'Message': 'Users sent a friend request successfully!!!!'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
