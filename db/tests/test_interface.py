@@ -7,9 +7,9 @@ import forms.form_filler as ff
 # test for match_ep db functions
 def test_match_users():
     new_name = users._get_test_name()
-    ret1 = users.add_user(new_name, 30, "Female", "hiking")
+    ret1 = users.add_user(new_name, 30, "Female", "hiking", "test@gmail.com", "password")
     new_name2 = users._get_test_name()
-    ret2 = users.add_user(new_name2, 30, "Female", "hiking")
+    ret2 = users.add_user(new_name2, 30, "Female", "hiking", "test@gmail.com", "password")
 
     matching = wrld.match_users(new_name, new_name2)
     # assert wrld.match_exists(IDTuple[0])
@@ -23,9 +23,9 @@ def test_match_users():
 def test_unmatch_users():
     #match test users
     new_name1 = users._get_test_name()
-    ret = users.add_user(new_name1, 30, "Female", "Hiking")
+    ret = users.add_user(new_name1, 30, "Female", "Hiking", "test@gmail.com", "password")
     new_name2 = users._get_test_name()
-    ret = users.add_user(new_name2, 30, "Female", "Hiking")
+    ret = users.add_user(new_name2, 30, "Female", "Hiking", "test@gmail.com", "password")
     wrld.match_users(new_name1, new_name2)
     #unmatching
     unmatching = wrld.unmatch_users(new_name1, new_name2)
@@ -49,9 +49,9 @@ def test_fetch_friendReqs():
 
 def test_acceptFriendReq():
     new_name1 = users._get_test_name()
-    ret1 = users.add_user(new_name1, 30, "Female", "hiking")
+    ret1 = users.add_user(new_name1, 30, "Female", "hiking", "test@gmail.com", "password")
     new_name2 = users._get_test_name()
-    ret2 = users.add_user(new_name2, 30, "Female", "hiking")
+    ret2 = users.add_user(new_name2, 30, "Female", "hiking", "test@gmail.com", "password")
     testbool = wrld.acceptFriendReq(new_name1, new_name2)
     assert not isinstance(testbool, bool)
     wrld.unmatch_users(new_name1, new_name2)
@@ -61,10 +61,10 @@ def test_acceptFriendReq():
 
 def test_deleteFriendReq():
     new_name = users._get_test_name()
-    ret1 = users.add_user(new_name, 30, "Female", "hiking")
+    ret1 = users.add_user(new_name, 30, "Female", "hiking", "test@gmail.com", "password")
     friendreqs = wrld.fetch_friendReqs()
     new_name2 = users._get_test_name()
-    ret = users.add_user(new_name2, 30, "Female", "Hiking")
+    ret = users.add_user(new_name2, 30, "Female", "Hiking", "test@gmail.com", "password")
     success = wrld.deleteFriendReq(new_name, new_name2)
     for user in friendreqs:
         if (user == new_name):
@@ -75,9 +75,9 @@ def test_deleteFriendReq():
 
 def test_sendFriendReq():
     new_name = users._get_test_name()
-    ret = users.add_user(new_name, 30, "Female", "Hiking")
+    ret = users.add_user(new_name, 30, "Female", "Hiking", "test@gmail.com", "password")
     new_name2 = users._get_test_name()
-    ret = users.add_user(new_name2, 30, "Female", "Hiking")
+    ret = users.add_user(new_name2, 30, "Female", "Hiking", "test@gmail.com", "password")
     # success = wrld.sendFriendReq(new_name, new_name2)
     success = wrld.newSendFriendReq(new_name, new_name2)
     assert isinstance (success, bool)

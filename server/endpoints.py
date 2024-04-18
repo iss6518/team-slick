@@ -107,7 +107,9 @@ user_fields = api.model('NewUser', {
     users.NAME: fields.String,
     users.AGE: fields.Integer,
     users.GENDER: fields.String,
-    users.INTERESTS: fields.String
+    users.INTERESTS: fields.String,
+    users.EMAIL: fields.String,
+    users.PASSWORD: fields.String
 })
 
 
@@ -167,8 +169,11 @@ class Users(Resource):
         age = request.json[users.AGE]
         gender = request.json[users.GENDER]
         interests = request.json[users.INTERESTS]
+        email = request.json[users.EMAIL]
+        password = request.json[users.PASSWORD]
         try:
-            new_id = users.add_user(name, age, gender, interests)
+            new_id = users.add_user(name, age, gender,
+                                    interests, email, password)
             if new_id is False:  # add_user return true if _id is None
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {USER_ID: new_id}
@@ -186,11 +191,15 @@ class Users(Resource):
         age = request.json[users.AGE]
         gender = request.json[users.GENDER]
         interests = request.json[users.INTERESTS]
+        email = request.json[users.EMAIL]
+        password = request.json[users.PASSWORD]
 
         newValues = {
                 users.AGE: age,
                 users.GENDER: gender,
-                users.INTERESTS: interests
+                users.INTERESTS: interests,
+                users.EMAIL: email,
+                users.PASSWORD: password
                 }
 
         try:
