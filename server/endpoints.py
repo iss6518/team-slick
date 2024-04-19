@@ -386,7 +386,6 @@ class FriendReqsAccept(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
-
 @api.route('/gender-options')
 class GenderOptions(Resource):
     def get(self):
@@ -394,8 +393,9 @@ class GenderOptions(Resource):
         This endpoint returns all gender options for the registration form.
         """
         gender_options = form_module.get_gender_options()
-        return { 'gender_options': gender_options }
-    
+        return {'gender_options': gender_options}
+
     model_gender_options = api.model('GenderOptions', {
-    'gender_options': fields.List(fields.String, description='List of gender options'),
-})
+        'gender_options':
+            fields.List(fields.String, description='List of gender options'),
+    })
