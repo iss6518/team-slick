@@ -11,6 +11,7 @@ from flask_cors import CORS
 
 import db.users as users
 import db.interface as interface
+import forms.form as form_module
 
 # creating flash application
 app = Flask(__name__)
@@ -383,3 +384,18 @@ class FriendReqsAccept(Resource):
             return {MATCH_ID: updated_id}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
+
+
+
+@api.route('/gender-options')
+class GenderOptions(Resource):
+    def get(self):
+        """
+        This endpoint returns all gender options for the registration form.
+        """
+        gender_options = form_module.get_gender_options()
+        return { 'gender_options': gender_options }
+    
+    model_gender_options = api.model('GenderOptions', {
+    'gender_options': fields.List(fields.String, description='List of gender options'),
+})
