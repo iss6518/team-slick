@@ -134,9 +134,8 @@ match_fields = api.model('matchUser', {
 })
 
 
-@app.route(f'{LOGIN_EP}')
-class Login():
-
+@api.route(f'{LOGIN_EP}')
+class LoginUser(Resource):
     @api.expect(login_fields)
     @api.response(HTTPStatus.OK, 'Success')
     @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
@@ -147,13 +146,14 @@ class Login():
 
         try:
             new_session = interface.login(email, password)
-            if new_session is False:
+            if new_session is None:
                 raise wz.ServiceUnavailable('We have a technical problem.')
             session['user_id'] = str(new_session['_id'])
             session['email'] = email
             # session['role'] = role
 
-            return jsonify({'message': 'Logged in successfully'}), 200
+            return jsonify({'message': 'Logged in successfully',
+                            'session': new_session}), 200
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 

@@ -20,8 +20,14 @@ FAVORITE = 'favorite'
 
 
 # FOR LOGIN
-def login():
-    pass
+def login(email: str, password: str) -> dict:
+    """
+    A function to search db for matching email & password
+    """
+    dbc.connect_db()
+    filter = {users.EMAIL: email, users.PASSWORD: password}
+    user = dbc.fetch_one(USERS_COLLECT, filter)
+    return user
 
 
 # FOR MATCHING
