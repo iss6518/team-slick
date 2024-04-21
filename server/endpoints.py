@@ -158,32 +158,22 @@ class LoginUser(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
-"""
-# function to get the current info on user that is signed in
-def get_authenticated_user():
-    if 'user_id' in session and 'email' in session:
-        user_id = session['user_id']
-        email = session['email']
-        user = interface.login(id, email)
-        # user = dbc.fetch_one(USERS_COLLECT, {'_id': user_id, 'email': email})
-        return user
-    else:
-        return None
-"""
-
-
 @api.route('/developer')
 class DeveloperEndpoint(Resource):
     # @api.expect(login_fields)
     def get(self):
         # user is current info on user that is signed in
+        # print(session)
         user = interface.get_authenticated_user(session)
+        print(user)
         if user and user.get('role') == 'developer':
             # Only grant access to users with the developer role
-            return {'message': 'Developer endpoint accessed successfully'}
+            return {'message': 'Developer endpoint accessed successfully',
+                    'user': user}
         else:
             # If user not authenticated w/ developer role
-            return {'message': 'Dont have access to developer endpoint'}
+            return {'message': 'Dont have access to developer endpoint',
+                    'user': user}
 
 
 @api.route(f'{USERS_EP}')
@@ -233,9 +223,10 @@ class Users(Resource):
         interests = request.json[users.INTERESTS]
         email = request.json[users.EMAIL]
         password = request.json[users.PASSWORD]
+        role = 'customer'
         try:
             new_id = users.add_user(name, age, gender,
-                                    interests, email, password)
+                                    interests, email, password, role)
             if new_id is False:  # add_user return true if _id is None
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {USER_ID: new_id}

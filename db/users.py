@@ -18,6 +18,7 @@ GENDER = 'gender'
 INTERESTS = 'interests'
 EMAIL = 'email'
 PASSWORD = 'password'
+ROLE = 'role'
 
 FLD_NM = 'fld_nm'
 
@@ -105,7 +106,7 @@ FIND_USER_FORM_FLDS = [
 
 
 def add_user(name: str, age: int, gender: str,
-             interest: str, email: str, password: str) -> bool:
+             interest: str, email: str, password: str, role: str = '') -> bool:
     """
     Function to add users. For interests, users only enter 1 interest
     """
@@ -121,6 +122,7 @@ def add_user(name: str, age: int, gender: str,
     user[INTERESTS] = interest
     user[EMAIL] = email
     user[PASSWORD] = password
+    user[ROLE] = role
 
     dbc.connect_db()
     _id = dbc.insert_one(USERS_COLLECT, user)

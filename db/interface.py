@@ -33,11 +33,14 @@ def login(email: str, password: str) -> dict:
 
 def get_authenticated_user(session):
     dbc.connect_db()
+    # print(session)
+    # print(session['user_id'], session['email'])
     if 'user_id' in session and 'email' in session:
-        user_id = session['user_id']
+        # user_id = session['user_id']
         email = session['email']
-        # print(user_id, email)
-        filter = {users.ID: user_id, users.EMAIL: email}
+        # should also filter by _id here but need to figure out
+        # how to search by _id in mongo
+        filter = {users.EMAIL: email}
         user = dbc.fetch_one(USERS_COLLECT, filter)
         return user
     else:
