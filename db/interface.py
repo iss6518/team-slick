@@ -31,6 +31,18 @@ def login(email: str, password: str) -> dict:
     return user
 
 
+def get_authenticated_user(session):
+    dbc.connect_db()
+    if 'user_id' in session and 'email' in session:
+        user_id = session['user_id']
+        email = session['email']
+        # print(user_id, email)
+        user = dbc.fetch_one(USERS_COLLECT, {users.ID: user_id, users.EMAIL: email})
+        return user
+    else:
+        return None
+
+
 # FOR MATCHING
 def match_exists(matchID) -> bool:
     dbc.connect_db()

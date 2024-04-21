@@ -158,6 +158,34 @@ class LoginUser(Resource):
             raise wz.NotAcceptable(f'{str(e)}')
 
 
+"""
+# function to get the current info on user that is signed in
+def get_authenticated_user():
+    if 'user_id' in session and 'email' in session:
+        user_id = session['user_id']
+        email = session['email']
+        user = interface.login(id, email)
+        # user = dbc.fetch_one(USERS_COLLECT, {'_id': user_id, 'email': email})
+        return user
+    else:
+        return None
+"""
+
+
+@api.route('/developer')
+class DeveloperEndpoint(Resource):
+    # @api.expect(login_fields)
+    def get(self):
+        # user is current info on user that is signed in
+        user = interface.get_authenticated_user(session)
+        if user and user.get('role') == 'developer':
+            # Only grant access to users with the developer role
+            return {'message': 'Developer endpoint accessed successfully'}
+        else:
+            # If user not authenticated w/ developer role
+            return {'message': 'Dont have access to developer endpoint'}
+
+
 @api.route(f'{USERS_EP}')
 class Users(Resource):
     """
