@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 from http import HTTPStatus
 import werkzeug.exceptions as wz
 
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, session
 from flask_restx import Resource, Api, fields
 from flask_cors import CORS
 
