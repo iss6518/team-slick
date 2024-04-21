@@ -19,6 +19,11 @@ OTHER_USER = 'other_user'
 FAVORITE = 'favorite'
 
 
+# FOR LOGIN
+def login():
+    pass
+
+
 # FOR MATCHING
 def match_exists(matchID) -> bool:
     dbc.connect_db()

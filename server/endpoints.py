@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 from http import HTTPStatus
 import werkzeug.exceptions as wz
 
-from flask import Flask, request
+from flask import Flask, request, jsonify, session
 from flask_restx import Resource, Api, fields
 from flask_cors import CORS
 
@@ -21,6 +21,8 @@ CORS(app)
 #    r"/friendRequest/*": {"origins": "http://localhost:3000"}
 # })
 api = Api(app)
+app.secret_key = 'seSSion-seCRet-KeY-123'
+
 
 MAIN_MENU = 'MainMenu'
 MAIN_MENU_NM = "Welcome to Text Game!"
@@ -29,6 +31,7 @@ MAIN_MENU_NM = "Welcome to Text Game!"
 HELLO_EP = '/hello'
 INTERFACE_MENU_EP = '/interface_menu'
 
+LOGIN_EP = '/login'
 USERS_EP = '/users'
 MATCHES_EP = '/matches'
 FRIENDREQ_EP = '/friendRequest'
@@ -114,6 +117,12 @@ user_fields = api.model('NewUser', {
 })
 
 
+login_fields = api.model('UserSession', {
+    users.EMAIL: fields.String,
+    users.PASSWORD: fields.String
+})
+
+
 delete_fields = api.model('delUser', {
     users.NAME: fields.String
 })
@@ -123,6 +132,30 @@ match_fields = api.model('matchUser', {
     interface.NAME: fields.String,
     interface.OTHER_USER: fields.String
 })
+
+
+@app.route(f'{LOGIN_EP}')
+class Login():
+
+    @api.expect(login_fields)
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'Not Acceptable')
+    def post(self):
+
+        email = request.json[users.EMAIL]
+        password = request.json[users.PASSWORD]
+
+        try:
+            new_session = interface.login(email, password)
+            if new_session is False:
+                raise wz.ServiceUnavailable('We have a technical problem.')
+            session['user_id'] = str(new_session['_id'])
+            session['email'] = email
+            # session['role'] = role
+
+            return jsonify({'message': 'Logged in successfully'}), 200
+        except ValueError as e:
+            raise wz.NotAcceptable(f'{str(e)}')
 
 
 @api.route(f'{USERS_EP}')
