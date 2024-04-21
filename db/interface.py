@@ -27,6 +27,7 @@ def login(email: str, password: str) -> dict:
     dbc.connect_db()
     filter = {users.EMAIL: email, users.PASSWORD: password}
     user = dbc.fetch_one(USERS_COLLECT, filter)
+    print("User:", user)
     return user
 
 

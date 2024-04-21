@@ -152,8 +152,8 @@ class LoginUser(Resource):
             session['email'] = email
             # session['role'] = role
 
-            return jsonify({'message': 'Logged in successfully',
-                            'session': new_session}), 200
+            # return {'message': 'success'}
+            return {'session': new_session}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')
 
