@@ -37,7 +37,8 @@ def get_authenticated_user(session):
         user_id = session['user_id']
         email = session['email']
         # print(user_id, email)
-        user = dbc.fetch_one(USERS_COLLECT, {users.ID: user_id, users.EMAIL: email})
+        filter = {users.ID: user_id, users.EMAIL: email}
+        user = dbc.fetch_one(USERS_COLLECT, filter)
         return user
     else:
         return None
