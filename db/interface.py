@@ -135,22 +135,22 @@ def deleteFriendReq(name: str, other_user_name: str):
         raise ValueError('Users are not unmatched')
 
 
-def sendFriendReq(name: str, other_user_name: str) -> bool:
-    """
-    Original way to send a friend request to another user.
-    Will be replaced with func below.
-    """
-    if (not users.exists(name)) or (not users.exists(other_user_name)):
-        raise ValueError('Invlaid entry')
+# def sendFriendReq(name: str, other_user_name: str) -> bool:
+#     """
+#     Original way to send a friend request to another user.
+#     Will be replaced with func below.
+#     """
+#     if (not users.exists(name)) or (not users.exists(other_user_name)):
+#         raise ValueError('Invlaid entry')
 
-    # Add the match for name
-    dbc.connect_db()
-    FRIENDREQA = {NAME: name, OTHER_USER: other_user_name}
-    FRIENDREQB = {NAME: other_user_name, OTHER_USER: name}
+#     # Add the match for name
+#     dbc.connect_db()
+#     FRIENDREQA = {NAME: name, OTHER_USER: other_user_name}
+#     FRIENDREQB = {NAME: other_user_name, OTHER_USER: name}
 
-    _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQA)
-    _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQB)
-    return _id1 is not None and _id2 is not None
+#     _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQA)
+#     _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQB)
+#     return _id1 is not None and _id2 is not None
 
 
 """ This will be the new way we store friend
@@ -160,13 +160,7 @@ and corresponding FR_RECIEVED list for the recieving user."""
 
 
 def newSendFriendReq(name: str, other_user_name: str) -> bool:
-    """
-    NEW TESTING OUT.. sending a friend request to another user.
-    """
-    """ TO DO:
-    Need to search for the user if it already exists in friendRequests
-    We may have to insert if first friendRequest user sends. ********
-    """
+
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invalid entry')
 
