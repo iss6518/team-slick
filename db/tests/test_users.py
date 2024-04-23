@@ -5,7 +5,7 @@ import pytest
 @pytest.fixture(scope='function')
 def temp_user():
     name = testUsers._get_test_name()
-    ret = testUsers.add_user(name, 1, "gender", "interest")
+    ret = testUsers.add_user(name, 1, "gender", "interest", "email@gmail.com", "password")
     yield name
     if testUsers.exists(name):
         testUsers.del_user(name)
@@ -44,12 +44,12 @@ def test_add_user_dup_name(temp_user):
     """
     dup_name = temp_user
     with pytest.raises(ValueError):
-        testUsers.add_user(dup_name, 1, "gender", "interest")
+        testUsers.add_user(dup_name, 1, "gender", "interest", "email@gmail.com", "password")
 
 
 def test_add_user():
     new_name = testUsers._get_test_name()
-    ret = testUsers.add_user(new_name, 30, "Female", "hiking")
+    ret = testUsers.add_user(new_name, 30, "Female", "hiking", "test@gmail.com", "password")
     assert testUsers.exists(new_name)
     assert isinstance(ret, bool)
     testUsers.del_user(new_name)
@@ -69,7 +69,7 @@ def test_del_user_not_there():
 
 def test_update_user():
     new_name = testUsers._get_test_name()
-    ret = testUsers.add_user(new_name, 30, "Female", "hiking")
+    ret = testUsers.add_user(new_name, 30, "Female", "hiking", "test@gmail.com", "password")
     testUsers.update_user(new_name, {testUsers.AGE: 27, testUsers.GENDER: "male"})
     assert testUsers.exists(new_name)
     assert isinstance(ret, bool)

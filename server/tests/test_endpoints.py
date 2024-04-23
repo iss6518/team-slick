@@ -18,7 +18,9 @@ mockName = "Dareck"
 mockAge = 28
 mockGender = "female"
 mockInterests = "running"
-mockValues = {users.NAME: mockName, users.AGE: mockAge, users.GENDER: mockGender, users.INTERESTS: mockInterests}
+mockEmail = "test@gmail.com"
+mockPassword = "password"
+mockValues = {users.NAME: mockName, users.AGE: mockAge, users.GENDER: mockGender, users.INTERESTS: mockInterests, users.EMAIL: mockEmail, users.PASSWORD: mockPassword}
 
 mock2Name = "Dareck"
 mockOtherName = "John"

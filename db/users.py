@@ -16,6 +16,9 @@ NAME = 'user_name'
 AGE = 'age'
 GENDER = 'gender'
 INTERESTS = 'interests'
+EMAIL = 'email'
+PASSWORD = 'password'
+ROLE = 'role'
 
 FLD_NM = 'fld_nm'
 
@@ -38,6 +41,8 @@ def get_test_user():
     test_user[AGE] = 18
     test_user[GENDER] = "male"
     test_user[INTERESTS] = "hiking"
+    test_user[EMAIL] = "test@gmail.com"
+    test_user[PASSWORD] = "password"
     return test_user
 
 
@@ -86,20 +91,13 @@ def search_user(name: str) -> dict:
         raise ValueError(f'Search failure: {name} not in database.')
 
 
-USERNAME = 'username'
-AGE = 'age'
-GENDER = 'gender'
-INTEREST = 'interest'
-EMAIL = 'email'
-PASSWORD = 'password'
-
 """
 Search a user (assn for 4/4/24 lecture)
 QUESTION: where to add tests & return FIND_UDER_FORM_FLDS? ***
 """
 FIND_USER_FORM_FLDS = [
     {
-        FLD_NM: USERNAME,
+        FLD_NM: NAME,
         ff.QSTN: 'Enter username (not just name) to find specific user',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.INSTRUCTIONS: True,
@@ -107,7 +105,8 @@ FIND_USER_FORM_FLDS = [
 ]
 
 
-def add_user(name: str, age: int, gender: str, interest: str) -> bool:
+def add_user(name: str, age: int, gender: str,
+             interest: str, email: str, password: str, role: str = '') -> bool:
     """
     Function to add users. For interests, users only enter 1 interest
     """
@@ -121,6 +120,9 @@ def add_user(name: str, age: int, gender: str, interest: str) -> bool:
     user[AGE] = age
     user[GENDER] = gender
     user[INTERESTS] = interest
+    user[EMAIL] = email
+    user[PASSWORD] = password
+    user[ROLE] = role
 
     dbc.connect_db()
     _id = dbc.insert_one(USERS_COLLECT, user)
@@ -138,7 +140,7 @@ CREATE_ACCOUNT_FORM_FLDS = [
         ff.INSTRUCTIONS: True,
     },
     {
-        FLD_NM: USERNAME,
+        FLD_NM: NAME,
         ff.QSTN: 'Choose an username to create an account',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.INSTRUCTIONS: True,
@@ -156,7 +158,7 @@ CREATE_ACCOUNT_FORM_FLDS = [
         ff.OPT: True,
     },
     {
-        FLD_NM: INTEREST,
+        FLD_NM: INTERESTS,
         ff.QSTN: 'Add an interest to create an account',
         ff.PARAM_TYPE: ff.QUERY_STR,
         ff.OPT: True,
