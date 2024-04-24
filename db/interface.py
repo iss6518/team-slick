@@ -18,6 +18,11 @@ NAME = 'user_name'
 OTHER_USER = 'other_user'
 FAVORITE = 'favorite'
 
+# added these for fetch_one
+# for friend requests
+FRR = 'friend_request_received'
+FRS = 'friend_request_sent'
+
 
 # FOR LOGIN
 def login(email: str, password: str) -> dict:
@@ -193,9 +198,9 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invalid entry')
 
-    # # TO DO: need to check for duplicates***
-    # if dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: other_user_name})
-    #     raise ValueError('Duplicate entry')
+    # TO DO: need to check for duplicates***
+    if dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: name, FRR: friend_request_recieved.exists(other_user_name)}):
+        raise ValueError('Duplicate entry')
 
     dbc.connect_db()
 
