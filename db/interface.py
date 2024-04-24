@@ -162,6 +162,7 @@ def deleteFriendReq(name: str, other_user_name: str):
     except ValueError:
         raise ValueError('Users are not unmatched')
 
+# OLD sendFriendReq that's now been replaced by newSendFriendReq
 
 # def sendFriendReq(name: str, other_user_name: str) -> bool:
 #     """
@@ -191,6 +192,10 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
 
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invalid entry')
+
+    # # TO DO: need to check for duplicates***
+    # if dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: other_user_name})
+    #     raise ValueError('Duplicate entry')
 
     dbc.connect_db()
 
