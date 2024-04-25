@@ -200,16 +200,42 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invalid entry')
 
+    dbc.connect_db()
+
     # TO DO: need to check for duplicates ***
     currUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: name})  # finding person
     otherUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: other_user_name})
-
+    
     if (not currUser) and (not otherUser):
         dbc.insert_one(FRIENDREQ_COLLECT, {NAME: name, FRS: [other_user_name], FRR: []})
         dbc.insert_one(FRIENDREQ_COLLECT, {NAME: other_user_name, FRS: [], FRR: [name]})
+    
+    # TO DO: Use another function other than .find() ***
+    # and solve for why cors saved as an object {} ***
+
+    # elif currUser and currUser[FRS].find(other_user_name):
+    #     # checking FRS for other username
+    #     raise ValueError('Duplicate entry')
+
+    # elif otherUser and otherUser[FRR].find(name):
+    #     # checking FRS for other username
+    #     raise ValueError('Duplicate entry')    
+
+    elif not currUser:
+        dbc.insert_one(FRIENDREQ_COLLECT, {NAME: name, FRS: [other_user_name], FRR: []})
+        # Add name to friend_request_received list of other_user_name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
+                    {"$push": {"friend_request_received": {NAME: name}}}
+                    )
+
+    elif not otherUser:
+        dbc.insert_one(FRIENDREQ_COLLECT, {NAME: other_user_name, FRS: [], FRR: [name]})
+        # Add other_user_name to friend_request_sent list of name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
+                    {"$push": {"friend_request_sent": {NAME: other_user_name}}}
+                    )
 
     else: 
-        dbc.connect_db()
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
                     {"$push": {"friend_request_sent": {NAME: other_user_name}}}
