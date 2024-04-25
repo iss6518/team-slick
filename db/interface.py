@@ -1,6 +1,8 @@
 # interface for matching and sending friend requests for our users
 import db.db_connect as dbc
 import db.users as users
+# import db.friend_request_received as friend_rr
+# import db.friend_request_sent as friend_rs
 
 USERS_COLLECT = "users"
 MATCHES_COLLECT = "matches"
@@ -198,20 +200,24 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
     if (not users.exists(name)) or (not users.exists(other_user_name)):
         raise ValueError('Invalid entry')
 
-    # TO DO: need to check for duplicates***
-    if dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: name, FRR: friend_request_recieved.exists(other_user_name)}):
-        raise ValueError('Duplicate entry')
+    # TO DO: need to check for duplicates ***
+    currUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: name})  # finding person
+    otherUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: other_user_name})
 
-    dbc.connect_db()
+    if (not currUser) and (not otherUser):
+        dbc.insert_one(FRIENDREQ_COLLECT, {NAME: name, FRS: [other_user_name], FRR: []})
+        dbc.insert_one(FRIENDREQ_COLLECT, {NAME: other_user_name, FRS: [], FRR: [name]})
 
-    # Add other_user_name to friend_request_sent list of name
-    dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
-                   {"$push": {"friend_request_sent": {NAME: other_user_name}}}
-                   )
+    else: 
+        dbc.connect_db()
+        # Add other_user_name to friend_request_sent list of name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
+                    {"$push": {"friend_request_sent": {NAME: other_user_name}}}
+                    )
 
-    # Add name to friend_request_received list of other_user_name
-    dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
-                   {"$push": {"friend_request_received": {NAME: name}}}
-                   )
+        # Add name to friend_request_received list of other_user_name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
+                    {"$push": {"friend_request_received": {NAME: name}}}
+                    )
 
     return True
