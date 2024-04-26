@@ -451,3 +451,63 @@ class GenderOptions(Resource):
         'gender_options':
             fields.List(fields.String, description='List of gender options'),
     })
+
+
+form_field_model = api.model('FormField', {
+    # Form structure model definition
+    'fld_nm': fields.String(required=True, description='The field name'),
+    'qstn': fields.String(required=True, description='The field label'),
+    'type': fields.String(required=True, description='The field type'),
+    'choices': fields.List(fields.String, description='The dropdown choices'),
+    # Add any other necessary field attributes here
+})
+
+form_structure_model = api.model('FormStructure', {
+    'fields': fields.List(fields.Nested(form_field_model),
+                          required=True, description='List of form fields'),
+})
+
+
+@api.route('/form-structure')
+class FormStructure(Resource):
+
+    @api.marshal_with(form_structure_model, envelope='data')
+    def get(self):
+        """
+        Returns the structure of the entire form.
+        """
+        # Directly define the form structure here
+        form_structure = [
+            {
+                "fld_nm": "username",
+                "qstn": "Username",
+                "type": "text",
+                "choices": None
+            },
+            {
+                "fld_nm": "email",
+                "qstn": "Email",
+                "type": "email",
+                "choices": None
+            },
+            {
+                "fld_nm": "Age",
+                "qstn": "Age",
+                "type": "number",
+                "choices": None
+            },
+            {
+                "fld_nm": "gender",
+                "qstn": "Gender",
+                "type": "select",
+                "choices": ["Male", "Female", "Other", "Prefer not to say"]
+            },
+            {
+                "fld_nm": "password",
+                "qstn": "Password",
+                "type": "password",
+                "choices": None
+            }
+
+        ]
+        return {'fields': form_structure}

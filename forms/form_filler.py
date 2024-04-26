@@ -23,7 +23,6 @@ LIST = 'list'
 MARKDOWN = 'markdown'
 REQ_LEN = 'req_len'
 INPUT_TYPE = 'input_type'
-RECOMMENDED_PAGE = 'recommended_page'
 URL = 'url'
 PARAM_TYPE = 'param_type'
 # two parameter types:
