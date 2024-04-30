@@ -503,15 +503,15 @@ class FormStructure(Resource):
                 "choices": ["Male", "Female", "Other", "Prefer not to say"]
             },
             {
-                "fld_nm": "password",
-                "qstn": "Password",
-                "type": "password",
-                "choices": None
-            },
-            {
                 "fld_nm": "interests",
                 "qstn": "Interests",
                 "type": "text",
+                "choices": None
+            },
+            {
+                "fld_nm": "password",
+                "qstn": "Password",
+                "type": "password",
                 "choices": None
             }
 
