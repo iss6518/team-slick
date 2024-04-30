@@ -479,7 +479,7 @@ class FormStructure(Resource):
         # Directly define the form structure here
         form_structure = [
             {
-                "fld_nm": "username",
+                "fld_nm": "user_name",
                 "qstn": "Username",
                 "type": "text",
                 "choices": None
@@ -491,7 +491,7 @@ class FormStructure(Resource):
                 "choices": None
             },
             {
-                "fld_nm": "Age",
+                "fld_nm": "age",
                 "qstn": "Age",
                 "type": "number",
                 "choices": None
