@@ -507,6 +507,12 @@ class FormStructure(Resource):
                 "qstn": "Password",
                 "type": "password",
                 "choices": None
+            },
+            {
+                "fld_nm": "intersts",
+                "qstn": "Interests",
+                "type": "text",
+                "choices": None
             }
 
         ]
