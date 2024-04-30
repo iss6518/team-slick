@@ -509,7 +509,7 @@ class FormStructure(Resource):
                 "choices": None
             },
             {
-                "fld_nm": "intersts",
+                "fld_nm": "interests",
                 "qstn": "Interests",
                 "type": "text",
                 "choices": None
