@@ -29,7 +29,7 @@ def test_unmatch_users():
     wrld.newMatchUsers(new_name1, new_name2)
     #unmatching
     unmatching = wrld.unmatch_users(new_name1, new_name2)
-    assert not isinstance(unmatching, bool)
+    assert isinstance(unmatching, bool)
     users.del_user(new_name1)
     users.del_user(new_name2)
 

@@ -28,7 +28,7 @@ mockMatchValues = {interface.NAME: mock2Name, interface.OTHER_USER: mockOtherNam
 
 mock3Name = users.get_test_user()
 mock2OtherName = users.get_test_user()
-mock_CoupleValues = {interface.NAME: mock3Name, interface.OTHER_USER: mock2OtherName}
+mock_CoupleValues = {interface.NAME: mock3Name, interface.OTHER_USER: mock2OtherName, interface.FAVORITES: False}
 
 
 def test_hello():
@@ -146,7 +146,7 @@ def test_for_users_bad_match(mock_add):
 # test for accepting (updating) friend request
 @patch('db.interface.acceptFriendReq', side_effect=ValueError(), autospec=True)
 def bad_test_acceptReq(mock_add):
-    resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mock_CoupleValues)
+    resp = TEST_CLIENT.put(ep.FRIENDREQ_EP, json = mockMatchValues)
     assert resp.status_code == NOT_ACCEPTABLE
 
 

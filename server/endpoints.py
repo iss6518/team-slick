@@ -130,7 +130,8 @@ delete_fields = api.model('delUser', {
 
 match_fields = api.model('matchUser', {
     interface.NAME: fields.String,
-    interface.OTHER_USER: fields.String
+    interface.OTHER_USER: fields.String,
+    interface.FAVORITES: fields.Boolean
 })
 
 
@@ -335,9 +336,9 @@ class Matches(Resource):
         """
         name = request.json[interface.NAME]
         otherName = request.json[interface.OTHER_USER]
-
+        favorite = request.json[interface.FAVORITES]
         try:
-            updated_id = interface.update_match(name, otherName)
+            updated_id = interface.update_match(name, otherName, favorite)
             if updated_id is False:
                 raise wz.ServiceUnavailable('We have a technical problem.')
             return {MATCH_ID: updated_id}
