@@ -212,44 +212,46 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
         dbc.insert_one(FRIENDREQ_COLLECT,
                        {NAME: other_user_name, FRS: [], FRR: [name]})
 
-    # TO DO: Use another function other than .find() ***
-    # and solve for why cors saved as an object {} ***
+    # This is checking for duplicates for each user
+    elif currUser and (other_user_name in currUser[FRS]):
+        # checking FRS for other username
+        raise ValueError('Duplicate entry')
 
-    # elif currUser and currUser[FRS].find(other_user_name):
-    #     # checking FRS for other username
-    #     raise ValueError('Duplicate entry')
+    elif otherUser and (name in otherUser[FRR]):
+        # checking FRS for other username
+        raise ValueError('Duplicate entry')
 
-    # elif otherUser and otherUser[FRR].find(name):
-    #     # checking FRS for other username
-    #     raise ValueError('Duplicate entry')
-
+    # if currUser doesn't exist, create it
+    # vs. updating other_user since it already exists
     elif not currUser:
         dbc.insert_one(FRIENDREQ_COLLECT,
                        {NAME: name, FRS: [other_user_name], FRR: []})
         # Add name to friend_request_received list of other_user_name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
-                       {"$push": {"friend_request_received": {NAME: name}}}
+                       {"$push": {"friend_request_received": name}}
                        )
 
+    # if otherUser doesn't exist, create it
+    # vs. updating currUser since it already exists
     elif not otherUser:
         dbc.insert_one(FRIENDREQ_COLLECT,
                        {NAME: other_user_name, FRS: [], FRR: [name]})
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
                        {"$push": {"friend_request_sent":
-                        {NAME: other_user_name}}}
+                        other_user_name}}
                        )
 
-    else:
+    else: # BOTH EXIST
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
                        {"$push": {"friend_request_sent":
-                        {NAME: other_user_name}}}
+                         other_user_name}}
                        )
 
         # Add name to friend_request_received list of other_user_name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
-                       {"$push": {"friend_request_received": {NAME: name}}}
+                       {"$push": {"friend_request_received": name}}
                        )
 
     return True
