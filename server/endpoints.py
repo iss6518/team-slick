@@ -321,7 +321,7 @@ class Matches(Resource):
         name = request.json[interface.NAME]
         other_user_name = request.json[interface.OTHER_USER]
         try:
-            interface.match_users(name, other_user_name)
+            interface.acceptFriendReq(name, other_user_name)
             return {'Message': 'Users matched successfully'}
         except ValueError as e:
             raise wz.NotAcceptable(f'{str(e)}')

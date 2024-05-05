@@ -25,6 +25,8 @@ FAVORITE = 'favorite'
 FRR = 'friend_request_received'
 FRS = 'friend_request_sent'
 
+MATCHES = 'match_list'
+
 
 # FOR LOGIN
 def login(email: str, password: str) -> dict:
@@ -70,12 +72,12 @@ def fetch_matches() -> dict:
     return docs
 
 
-def update_match(name: str, otherName: str) -> bool:
+def update_match(name: str, otherName: str) -> bool:  # TODO
     """
     Function to update match (depending on field we want to change)
     """
-    if not name:  # TODO should use match_exits func ***
-        raise ValueError("Match can't be blank")
+    if (not users.exists(name)) or (not users.exists(otherName)):
+        raise ValueError('Invalid entry')
 
     filter = {NAME: name, OTHER_USER: otherName}
     thisMatch = dbc.fetch_one(MATCHES_COLLECT, filter)
@@ -86,7 +88,7 @@ def update_match(name: str, otherName: str) -> bool:
     return _id is not None
 
 
-def unmatch_users(name: str, other_user_name: str):
+def unmatch_users(name: str, other_user_name: str):  # TODO
     """
     Unmatches two users by removing their connection.
     """
@@ -102,21 +104,81 @@ def unmatch_users(name: str, other_user_name: str):
         raise ValueError('Users are not unmatched')
 
 
-def match_users(name: str, other_user_name: str) -> bool:
-    """
-    Match two users by adding their connection.
-    """
+# def match_users(name: str, other_user_name: str) -> bool:
+#     """
+#     Match two users by adding their connection.
+#     """
+#     if (not users.exists(name)) or (not users.exists(other_user_name)):
+#         raise ValueError('Invlaid entry')
+
+#     # Add the match for name
+#     dbc.connect_db()
+#     MATCHA = {NAME: name, OTHER_USER: other_user_name, FAVORITE: False}
+#     MATCHB = {NAME: other_user_name, OTHER_USER: name, FAVORITE: False}
+
+#     _id1 = dbc.insert_one(MATCHES_COLLECT, MATCHA)
+#     _id2 = dbc.insert_one(MATCHES_COLLECT, MATCHB)
+#     return _id1 is not None and _id2 is not None
+
+
+def newMatchUsers(name: str, other_user_name: str) -> bool:
+
     if (not users.exists(name)) or (not users.exists(other_user_name)):
-        raise ValueError('Invlaid entry')
+        raise ValueError('Invalid entry')
 
-    # Add the match for name
     dbc.connect_db()
-    MATCHA = {NAME: name, OTHER_USER: other_user_name, FAVORITE: False}
-    MATCHB = {NAME: other_user_name, OTHER_USER: name, FAVORITE: False}
 
-    _id1 = dbc.insert_one(MATCHES_COLLECT, MATCHA)
-    _id2 = dbc.insert_one(MATCHES_COLLECT, MATCHB)
-    return _id1 is not None and _id2 is not None
+    currUser = dbc.fetch_one(MATCHES_COLLECT, {NAME: name})  # finding person
+    otherUser = dbc.fetch_one(MATCHES_COLLECT, {NAME: other_user_name})
+
+    if (not currUser) and (not otherUser):
+        # TODO: need to add favorite as well
+        dbc.insert_one(MATCHES_COLLECT,
+                       {NAME: name, MATCHES: [other_user_name]})
+        dbc.insert_one(MATCHES_COLLECT,
+                       {NAME: other_user_name, MATCHES: [name]})
+
+    # This is checking for duplicates for each user
+    elif currUser and (other_user_name in currUser[MATCHES]):
+        # checking FRS for other username
+        raise ValueError('Duplicate entry')
+
+    elif otherUser and (name in otherUser[MATCHES]):
+        # checking FRS for other username
+        raise ValueError('Duplicate entry')
+
+    # if currUser doesn't exist, create it
+    # vs. updating other_user since it already exists
+    elif not currUser:
+        dbc.insert_one(MATCHES_COLLECT,
+                       {NAME: name, MATCHES: [other_user_name]})
+        # Add name to friend_request_received list of other_user_name
+        dbc.update_one(MATCHES_COLLECT, {NAME: other_user_name},
+                       {"$push": {MATCHES: name}}
+                       )
+
+    # if otherUser doesn't exist, create it
+    # vs. updating currUser since it already exists
+    elif not otherUser:
+        dbc.insert_one(MATCHES_COLLECT,
+                       {NAME: other_user_name, MATCHES: [name]})
+        # Add other_user_name to friend_request_sent list of name
+        dbc.update_one(MATCHES_COLLECT, {NAME: name},
+                       {"$push": {MATCHES: other_user_name}}
+                       )
+
+    else:  # BOTH EXIST
+        # Add other_user_name to friend_request_sent list of name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
+                       {"$push": {MATCHES: other_user_name}}
+                       )
+
+        # Add name to friend_request_received list of other_user_name
+        dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
+                       {"$push": {MATCHES: name}}
+                       )
+
+    return True
 
 
 # THIS IS FOR FRIEND REQUESTS ***
@@ -128,31 +190,11 @@ def fetch_friendReqs() -> dict:
     return dbc.fetch_all_as_dict(NAME, FRIENDREQ_COLLECT)
 
 
-def acceptFriendReq(name: str, otherName: str) -> bool:
-    """
-    Function to accept friend request
-    """
-    if not name:  # TODO should use match_exits func ***
-        raise ValueError("Match can't be blank")
-
-    # filterOne = {NAME: name, OTHER_USER: otherName}
-    # filterTwo = {NAME: otherName, OTHER_USER: name}
-
-    # FIRST: accepting a friendReq:
-    match_users(name, otherName)
-
-    # AFTER: a friendReq
-    returnVal = deleteFriendReq(name, otherName)
-
-    # thisMatch = dbc.fetch_one(MATCHES_COLLECT, filter)
-    # setValues = {"$set": {FAVORITE: not (this[FAVORITE])}}
-
-    # dbc.connect_db()
-    # _id = dbc.update_one(FRIENDREQ_COLLECT, filter, setValues)
-    return returnVal
-
-
 def deleteFriendReq(name: str, other_user_name: str):
+    # name = darecklocal (FRS of cors)
+    # othername = cors (FRR of darecklocal)
+    # delete name from FRS cors / othernmae
+    # delete othername from FRR darecklocal / name
     """
     Retract a sent out Friend Request (or when match successful*)
     """
@@ -161,32 +203,40 @@ def deleteFriendReq(name: str, other_user_name: str):
 
     # Remove the match for name
     dbc.connect_db()
+    currUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: name})  # finding person
+    otherUser = dbc.fetch_one(FRIENDREQ_COLLECT, {NAME: other_user_name})
+
     try:
-        firstDel = {NAME: name, OTHER_USER: other_user_name}
-        secondDel = {NAME: other_user_name, OTHER_USER: name}
-        dbc.del_one(FRIENDREQ_COLLECT, firstDel)
-        dbc.del_one(FRIENDREQ_COLLECT, secondDel)
+        if currUser and (other_user_name in currUser[FRR]):
+            dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
+                           {"$pull": {FRR: other_user_name}}
+                           )
+
+        if otherUser and (name in otherUser[FRS]):
+            dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
+                           {"$pull": {FRS: name}}
+                           )
+
     except ValueError:
         raise ValueError('Users are not unmatched')
 
-# OLD sendFriendReq that's now been replaced by newSendFriendReq
+    return True
 
-# def sendFriendReq(name: str, other_user_name: str) -> bool:
-#     """
-#     Original way to send a friend request to another user.
-#     Will be replaced with func below.
-#     """
-#     if (not users.exists(name)) or (not users.exists(other_user_name)):
-#         raise ValueError('Invlaid entry')
 
-#     # Add the match for name
-#     dbc.connect_db()
-#     FRIENDREQA = {NAME: name, OTHER_USER: other_user_name}
-#     FRIENDREQB = {NAME: other_user_name, OTHER_USER: name}
+def acceptFriendReq(name: str, otherName: str) -> bool:
+    """
+    Function to accept friend request
+    """
+    if (not users.exists(name)) or (not users.exists(otherName)):
+        raise ValueError("Match can't be blank")
 
-#     _id1 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQA)
-#     _id2 = dbc.insert_one(FRIENDREQ_COLLECT, FRIENDREQB)
-#     return _id1 is not None and _id2 is not None
+    # FIRST: accepting a friendReq:
+    newMatchUsers(name, otherName)
+
+    # AFTER: a friendReq
+    deleteFriendReq(name, otherName)
+
+    return True
 
 
 """ This will be the new way we store friend
@@ -228,7 +278,7 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
                        {NAME: name, FRS: [other_user_name], FRR: []})
         # Add name to friend_request_received list of other_user_name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
-                       {"$push": {"friend_request_received": name}}
+                       {"$push": {FRR: name}}
                        )
 
     # if otherUser doesn't exist, create it
@@ -238,20 +288,18 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
                        {NAME: other_user_name, FRS: [], FRR: [name]})
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
-                       {"$push": {"friend_request_sent":
-                        other_user_name}}
+                       {"$push": {FRS: other_user_name}}
                        )
 
     else:  # BOTH EXIST
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
-                       {"$push": {"friend_request_sent":
-                        other_user_name}}
+                       {"$push": {FRS: other_user_name}}
                        )
 
         # Add name to friend_request_received list of other_user_name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: other_user_name},
-                       {"$push": {"friend_request_received": name}}
+                       {"$push": {FRR: name}}
                        )
 
     return True

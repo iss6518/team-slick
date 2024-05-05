@@ -11,7 +11,7 @@ def test_match_users():
     new_name2 = users._get_test_name()
     ret2 = users.add_user(new_name2, 30, "Female", "hiking", "test@gmail.com", "password")
 
-    matching = wrld.match_users(new_name, new_name2)
+    matching = wrld.newMatchUsers(new_name, new_name2)
     # assert wrld.match_exists(IDTuple[0])
     # assert wrld.match_exists(IDTuple[1])
     assert isinstance(matching, bool)
@@ -26,7 +26,7 @@ def test_unmatch_users():
     ret = users.add_user(new_name1, 30, "Female", "Hiking", "test@gmail.com", "password")
     new_name2 = users._get_test_name()
     ret = users.add_user(new_name2, 30, "Female", "Hiking", "test@gmail.com", "password")
-    wrld.match_users(new_name1, new_name2)
+    wrld.newMatchUsers(new_name1, new_name2)
     #unmatching
     unmatching = wrld.unmatch_users(new_name1, new_name2)
     assert not isinstance(unmatching, bool)
@@ -53,7 +53,7 @@ def test_acceptFriendReq():
     new_name2 = users._get_test_name()
     ret2 = users.add_user(new_name2, 30, "Female", "hiking", "test@gmail.com", "password")
     testbool = wrld.acceptFriendReq(new_name1, new_name2)
-    assert not isinstance(testbool, bool)
+    assert isinstance(testbool, bool)
     wrld.unmatch_users(new_name1, new_name2)
     users.del_user(new_name1)
     users.del_user(new_name2)

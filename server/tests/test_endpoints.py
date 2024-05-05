@@ -121,13 +121,13 @@ def test_for_users_bad_unmatch(mock_add):
  
 
 # test for matching users
-@patch('db.interface.match_users', return_value=True, autospec=True)
+@patch('db.interface.acceptFriendReq', return_value=True, autospec=True)
 def test_match_users_success(mock_add):
     resp = TEST_CLIENT.post(ep.MATCHES_EP, json=mockMatchValues)
     assert resp.status_code == OK
 
 
-@patch('db.interface.match_users', side_effect=ValueError(), autospec=True)
+@patch('db.interface.newMatchUsers', side_effect=ValueError(), autospec=True)
 def test_for_users_bad_match(mock_add):
     resp = TEST_CLIENT.post(ep.MATCHES_EP, json=mockMatchValues)
     assert resp.status_code == NOT_ACCEPTABLE
