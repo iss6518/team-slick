@@ -242,11 +242,11 @@ def newSendFriendReq(name: str, other_user_name: str) -> bool:
                         other_user_name}}
                        )
 
-    else: # BOTH EXIST
+    else:  # BOTH EXIST
         # Add other_user_name to friend_request_sent list of name
         dbc.update_one(FRIENDREQ_COLLECT, {NAME: name},
                        {"$push": {"friend_request_sent":
-                         other_user_name}}
+                        other_user_name}}
                        )
 
         # Add name to friend_request_received list of other_user_name
